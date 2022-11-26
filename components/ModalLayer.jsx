@@ -15,10 +15,6 @@ function ModalLayer({closeModal}) {
                     x 
                 </button>
             </div>
-            
-            <div className='h-full w-full flex flex-col p-5 items-center'> 
-                This is Modal 
-            </div>
         </div>
     </div>
     );
