@@ -1,5 +1,6 @@
 import { memo } from 'react'
 function InputList({ lists, handleDeleteList }) {
+
     return (
         <div className="bg-slate-300 flex flex-row w-full px-2 justify-between">
             {lists}
