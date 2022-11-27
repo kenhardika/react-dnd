@@ -55,6 +55,10 @@ export default function FunctionIndex() {
     dispatch({ type: "DRAG_AND_DROP", payload: items })
   }
 
+  const handleChangeListOrder = ( indexSection, payload)=> {
+    dispatch({ type: "DD_LIST", payload, indexSection })
+  }
+
   return (
   <div className="h-screen bg-cyan-100">
     <div className=" w-full bg-scroll flex flex-col 
@@ -74,13 +78,14 @@ export default function FunctionIndex() {
                           return  <Draggable key = {`key-${index}`} draggableId={`id-${index}`} index={index}> 
                                    {(provided)=>(
                                       <div {...provided.draggableProps} {...provided.dragHandleProps} ref={provided.innerRef}>
-                                       <InputSection 
+                                       <InputSection  
                                         data = {item} 
                                         handleUpload = {(e)=>handleUpload(e, index)}
                                         handleChange = {(e)=>handleChange(e, index, item)}
                                         handleDeleteSection = {()=>handleDeleteSection(index)}
                                         handleDeleteList = {(indexList)=>handleDeleteList(index, indexList)}
                                         handleSubmitAddList = {(value)=> handleSubmitAddList(value, index)}
+                                        handleChangeListOrder = {(payload)=>handleChangeListOrder(index, payload)}
                                         />
                                        </div>
                                       )

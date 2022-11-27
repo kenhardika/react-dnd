@@ -1,28 +1,27 @@
 import { useRef, memo, useState } from "react";
 import InputList from "./InputList";
 import Image from "next/image";
-// import ModalLayer from "./ModalLayer";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 
-function InputSection({data, handleUpload, handleChange, handleSubmitAddList, handleChangeList, handleDeleteSection, handleDeleteList}) {
+function InputSection({data, handleUpload, handleChange, handleSubmitAddList, handleChangeListOrder, handleDeleteSection, handleDeleteList}) {
     const fileUpload = useRef();
     const tagRef = useRef();
-    // const [addList, setAddList] = useState(false);
     const [showModal, setShowModal] = useState(false);
+
+    const handleOnDragEnd = (result) => {
+        if (!result.destination) return;
+        console.log(result);
+        const items = Array.from(data.list);
+        const [reorderedItem] = items.splice(result.source.index, 1);
+        items.splice(result.destination.index, 0, reorderedItem);
+        handleChangeListOrder(items);
+    }
+
     return (
         <>
-        {/* {showModal?
-                    <ModalLayer 
-                        data = {data}
-                        closeModal={()=> setShowModal(false)}
-                        addListStatus = {addList}
-                        handleAddListStatus = {()=>setAddList(false)}
-                        handleChangeInputList = {(e)=>handleChangeInputList(e)}
-                    /> : ""
-                    } */}
         <div className="w-[500px] h-auto flex flex-col p-5 
             bg-white rounded-lg gap-5">
-                
             <div className="flex justify-end">
                 <button className="px-2 bg-red-500 
                     text-white text-sm rounded-xl"
@@ -61,13 +60,28 @@ function InputSection({data, handleUpload, handleChange, handleSubmitAddList, ha
                       { data?.image ? "Change Image": "Upload Image" } 
                 </button>
                 <div className="w-[90%] flex flex-col bg-gray-100 rounded-sm p-2 gap-2 justify-center items-center">
-                    {data?.list?.map((lists, index) => {
-                       return <InputList 
-                        key={index} 
-                        lists = {lists} 
-                        handleDeleteList = {()=>handleDeleteList(index)} />
-                    })
+              <DragDropContext onDragEnd={handleOnDragEnd}>
+               <Droppable droppableId="list">
+                {(provided)=>(
+                    <div className="w-full h-full gap-2 bg-gray-300" {...provided.droppableProps} ref={provided.innerRef}>
+                            {data?.list?.map((lists, index) => {
+                            return  <Draggable key = {`key-list-${index}`} draggableId={`list-id-${index}`} index={index}> 
+                                   {(provided)=>(
+                                      <div className="py-1 border border-solid" {...provided.draggableProps} {...provided.dragHandleProps} ref={provided.innerRef}>
+                                        <InputList 
+                                            key={index} 
+                                            lists = {lists} 
+                                            handleDeleteList = {()=>handleDeleteList(index)} 
+                                        />
+                                       </div>
+                                    )}
+                                    </Draggable>
+                            })}
+                            {provided.placeholder}
+                    </div>)
                     }
+               </Droppable>
+              </DragDropContext>
                     {
                      showModal? 
                         <form 
@@ -85,7 +99,6 @@ function InputSection({data, handleUpload, handleChange, handleSubmitAddList, ha
                     <button className=" w-[50px] bg-gray-500 text-white rounded-lg text-sm"
                         onClick={()=>{
                             setShowModal(!showModal);
-                            // setAddList(true);
                         }}
                     >+ list</button>
                 </div>

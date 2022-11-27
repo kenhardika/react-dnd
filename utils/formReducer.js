@@ -30,7 +30,7 @@ export const formReducer = (state, action) => {
             newData[indexSection] = newSection;
             return newData;
         case "ADD_LIST":
-            const addNewList = [...newSection.list];
+            const addNewList = [...newSection.list ];
             addNewList.push(value);
             newSection.list = addNewList;
             newData[indexSection] = newSection;
@@ -50,6 +50,10 @@ export const formReducer = (state, action) => {
             return newData;
         case "DRAG_AND_DROP":
             return payload;
+        case "DD_LIST":
+            newSection.list = payload;
+            newData[indexSection] = newSection;
+            return newData;
         default: 
             return state;
     }
