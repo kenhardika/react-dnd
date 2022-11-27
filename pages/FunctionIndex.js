@@ -1,11 +1,35 @@
 import { useReducer} from "react"
 import InputSection from "../components/InputSection";
 import { formReducer, INITIAL_STATE } from "../utils/formReducer";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import dynamic from 'next/dynamic';
 
-export default function FunctionIndex() {
-  
+
+
+export default function FunctionIndex() {  
+  const DragDropContext = dynamic(
+    () =>
+      import('react-beautiful-dnd').then(mod => {
+        return mod.DragDropContext;
+      }),
+    {ssr: false},
+  );
+  const Droppable = dynamic(
+    () =>
+      import('react-beautiful-dnd').then(mod => {
+        return mod.Droppable;
+      }),
+    {ssr: false},
+  );
+  const Draggable = dynamic(
+    () =>
+      import('react-beautiful-dnd').then(mod => {
+        return mod.Draggable;
+      }),
+    {ssr: false},
+  );
+
   const [state, dispatch] = useReducer(formReducer, INITIAL_STATE);
-  
   const handleUpload = (e, index)=> {
     const fileUploaded = e.target.files[0];
     if(!fileUploaded) return 
@@ -52,6 +76,14 @@ export default function FunctionIndex() {
     })
   }
 
+  const handleOnDragEnd = (result)=> {
+    if (!result.destination) return;
+    const items = Array.from(state);
+    const [reorderedItem] = items.splice(result.source.index, 1);
+    items.splice(result.destination.index, 0, reorderedItem);
+    dispatch({ type: "DRAG_AND_DROP", payload: items })
+  }
+
   return (
   <div className="h-screen bg-cyan-100">
     <div className=" w-full bg-scroll flex flex-col 
@@ -62,22 +94,35 @@ export default function FunctionIndex() {
           border-black rounded-lg p-2 active:translate-y-0.5" 
             onClick={()=> handleAddSection()
                     }> Add Section </button> 
-          <div className='h-full w-full flex flex-col p-5 gap-5 items-center'> 
-               {
-                state?.map((item, index) => {
-                    return <InputSection 
-                      data = {item} 
-                      key = {index}
-                      handleUpload = {(e)=>handleUpload(e, index)}
-                      handleChange = {(e)=>handleChange(e, index, item)}
-                      handleDeleteSection = {()=>handleDeleteSection(index)}
-                      handleDeleteList = {(indexList)=>handleDeleteList(index, indexList)}
-                      handleSubmitAddList = {(value)=> handleSubmitAddList(value, index)}
-                      handleChangeList = {(e)=> handleChangeList(e)}
-                      />
-                })
-               } 
-          </div>
+          <DragDropContext onDragEnd={handleOnDragEnd}>
+            <Droppable droppableId="section">
+              { (provided)=> (
+                <div className='h-full w-full flex flex-col p-5 gap-5 items-center' {...provided.droppableProps} ref={provided.innerRef}> 
+                    {
+                      state?.map((item, index) => {
+                          return  <Draggable key = {`key-${index}`} draggableId={`id-${index}`} index={index}> 
+                                   {(provided)=>(
+                                      <div {...provided.draggableProps} {...provided.dragHandleProps} ref={provided.innerRef}>
+                                       <InputSection 
+                                        data = {item} 
+                                        id={`id-${index}`}
+                                        handleUpload = {(e)=>handleUpload(e, index)}
+                                        handleChange = {(e)=>handleChange(e, index, item)}
+                                        handleDeleteSection = {()=>handleDeleteSection(index)}
+                                        handleDeleteList = {(indexList)=>handleDeleteList(index, indexList)}
+                                        handleSubmitAddList = {(value)=> handleSubmitAddList(value, index)}
+                                        />
+                                       </div>
+                                      )
+                                    } 
+                                  </Draggable>
+                      })
+                    } 
+                    {provided.placeholder}
+              </div>)
+              }
+           </Droppable>
+          </DragDropContext>
       </div>
     </div>
   </div>

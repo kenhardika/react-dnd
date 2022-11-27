@@ -16,7 +16,7 @@ export const formReducer = (state, action) => {
         list: [],
       }
     
-    const {name, value, indexSection, indexList, type, data, id } = action;
+    const {name, value, indexSection, indexList, payload } = action;
     const newData = [...state];
     const newSection = { ...newData[indexSection] };
     
@@ -48,6 +48,8 @@ export const formReducer = (state, action) => {
             newSection.list = newList;
             newData[indexSection] = newSection;
             return newData;
+        case "DRAG_AND_DROP":
+            return payload;
         default: 
             return state;
     }
