@@ -1,4 +1,4 @@
-import { useReducer } from "react"
+import { useReducer, useState } from "react"
 import InputSection from "../components/InputSection";
 import ModalLayer from "../components/ModalLayer";
 import { formReducer, formReducerStatus, INITIAL_STATE, INITIAL_STATUS } from "../utils/formReducer";
@@ -6,82 +6,66 @@ import { formReducer, formReducerStatus, INITIAL_STATE, INITIAL_STATUS } from ".
 export default function FunctionIndex() {
   
   const [state, dispatch] = useReducer(formReducer, INITIAL_STATE);
-  const [status, dispatchStatus] = useReducer(formReducerStatus, INITIAL_STATUS); // to do: buat change status, cobain
-  
+  const [addList, setAddList] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const handleUpload = (e, index)=> {
     const fileUploaded = e.target.files[0];
     if(!fileUploaded) return 
-    // console.log(fileUploaded);
-    const newState = { ...state[index], [e.target.name]: URL.createObjectURL(fileUploaded) }
-    // console.log(newState);
-    // dispatch({  
-    //             type: "UPLOAD_IMAGE", 
-    //             payload: {
-    //                 index: index,
-    //                 newState: newState
-    //             }
-    //           });
-
+    dispatch({  
+                type: "UPLOAD_IMAGE",
+                name: e.target.name, 
+                value: URL.createObjectURL(fileUploaded),
+                indexSection: index,
+              });
   }
 
   const handleChange = (e, indexSection, data) =>{
-    dispatch({ type:"CHANGE_TITLE", indexSection: indexSection, name: e.target.name, value: e.target.value, data })
-  }
-
-  const randomizeID = () => {
-    const randomId = Math.floor(Math.random() * 20);
-    if (state.some((item) => (item.id === randomId))) {
-      return randomizeID();
-    } else {
-      return randomId;
-    }
+    dispatch({ type:"CHANGE_TITLE", indexSection, name: e.target.name, value: e.target.value, data })
   }
 
   const handleAddSection = () => {
-    const emptySec = { 
-      title: "", 
-      image: "", 
-      list: [],
-      id: randomizeID()  
-    }
-    dispatch({ 
-      type: "ADD_SECTION", 
-      payload: { value: emptySec }})
+    dispatch({ type: "ADD_SECTION" })
   }
 
-  const handleAddList = (e, index) =>{
-    
-    dispatchStatus({ type: "CHANGE_STATUS_MODAL" });
+  const handleDeleteSection = (indexSection) => { 
     dispatch({
-      type:"ADD_LIST",
-      payload: {
-
-      }
+      type: "DELETE_SECTION",
+      indexSection
     })
   }
 
-  const handleDeleteSection = (id) => {
-    console.log(state);
-    console.log(id);
-    // const newFilter = state.filter((item)=> item.id !== id );
-    // console.log(newFilter);
-    // console.log(state[indexDelete].id);
-      // const newState = state.filter((item)=> item.id !== state[indexDelete].id );
-      // console.log(newState); 
-      // dispatch({
-      //   type: "DELETE_SECTION",
-      //   payload: newState
-      // })
+  const handleAddList = (e, index) =>{
+    setAddList(true);
+    setShowModal(true);
+  }
+
+  const handleSubmitAddList = (e) => {
+      dispatch({
+        type:"ADD_LIST",
+        name : e.target.name,
+        value : e.target.value
+      })
+  }
+
+  const handleDeleteList = (indexSection, indexList) => {
+    // console.log("delete " + indexSection + " " + indexList);
+    dispatch({
+      type: "DELETE_LIST",
+      indexSection,
+      indexList
+    })
   }
 
   console.log(state);
   return (
   <div className="h-screen bg-cyan-100">
-    {status.modalStatus?
-      <ModalLayer closeModal={
-        ()=>{ 
-              dispatchStatus({ type: "CHANGE_STATUS_MODAL" })  
-            }}/> : ""
+    {showModal?
+      <ModalLayer 
+        closeModal={()=> setShowModal(false)}
+        addListStatus = {addList}
+        handleAddListStatus = {()=>setAddList(false)}
+        handleSubmitAddList = {(e)=>handleSubmitAddList(e)}
+      /> : ""
     }
     <div className=" w-full bg-scroll flex flex-col 
       justify-center items-center bg-cyan-100">
@@ -101,8 +85,9 @@ export default function FunctionIndex() {
                       key = {index} 
                       handleUpload = {(e)=>handleUpload(e, index)}
                       handleChange = {(e)=>handleChange(e, index, item)}
-                      handleAddList = {(e, id)=>handleAddList(e, id)}
-                      handleDeleteSection = {(id)=>handleDeleteSection(id)}
+                      handleAddList = {()=>handleAddList(index)}
+                      handleDeleteSection = {()=>handleDeleteSection(index)}
+                      handleDeleteList = {(indexList)=>handleDeleteList(index, indexList)}
                       />
                 })
                } 

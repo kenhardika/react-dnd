@@ -2,17 +2,42 @@ export const INITIAL_STATE = [
     { title: "buku sejarah", 
       image: "", 
       list: ["list1", "list2"], 
-      id: 1,  
+    //   id: 1,  
     },
     { title: "buku tabungan", 
       image: "", 
       list: ["list1"], 
-      id: 1,  
+    //   id: 2,  
     }
   ]
-  
+
+// const randomizeID = () => {
+//     const randomId = Math.floor(Math.random() * 20);
+//     if (state.some((item) => (item.id === randomId))) {
+//         return randomizeID();
+//     } else {
+//         return randomId;
+//     }
+// }
+
 export const formReducer = (state, action) => {
-    const {name, value, indexSection, type, data } = action;
+//     const randomizeID = () => {
+//         const randomId = Math.floor(Math.random() * 20);
+//         if (state.some((item) => (item.id === randomId))) {
+//             return randomizeID();
+//         } else {
+//             return randomId;
+//         }
+//     }
+    
+    const emptySection = { 
+        title: "", 
+        image: "", 
+        list: [],
+        // id: randomizeID()  
+      }
+    
+    const {name, value, indexSection, indexList, type, data, id } = action;
     const newData = [...state];
     const newSection = { ...newData[indexSection] };
     // console.log(indexSection)
@@ -23,40 +48,26 @@ export const formReducer = (state, action) => {
             newSection[name] = value;
             newData[indexSection] = newSection;
             return newData;
-
         case "UPLOAD_IMAGE":
-            // state[action.payload.index] = action.payload.newState;
-            return [
-                ...state,
-            ];
+            newSection[name] = value;
+            newData[indexSection] = newSection;
+            return newData;
         case "ADD_LIST":
             return [];
         case "ADD_SECTION":
-            return [ ...state, action.payload.value];
+            return [ ...state, emptySection];
         case "DELETE_IMAGE":
-            return {};
+            return ;
         case "DELETE_SECTION":
-            return [ action.payload ];
+            newData.splice(indexSection, 1);
+            return newData;
         case "DELETE_LIST":
-            return {};
+            const newList = [...newSection.list ];
+            newList.splice(indexList, 1);
+            newSection.list = newList;
+            newData[indexSection] = newSection;
+            return newData;
         default: 
             return state;
     }
 }
-
-export const INITIAL_STATUS = {
-    modalStatus: false,
-}
-
-export const formReducerStatus = (status, action) => {
-    switch (action.type){
-        case "CHANGE_STATUS_MODAL":
-            return {
-                ...status,
-                modalStatus: !status.modalStatus
-            };
-        default: 
-            return status;
-    }
-}
-
