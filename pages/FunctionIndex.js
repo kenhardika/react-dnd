@@ -2,33 +2,8 @@ import { useReducer} from "react"
 import InputSection from "../components/InputSection";
 import { formReducer, INITIAL_STATE } from "../utils/formReducer";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import dynamic from 'next/dynamic';
-
-
 
 export default function FunctionIndex() {  
-  const DragDropContext = dynamic(
-    () =>
-      import('react-beautiful-dnd').then(mod => {
-        return mod.DragDropContext;
-      }),
-    {ssr: false},
-  );
-  const Droppable = dynamic(
-    () =>
-      import('react-beautiful-dnd').then(mod => {
-        return mod.Droppable;
-      }),
-    {ssr: false},
-  );
-  const Draggable = dynamic(
-    () =>
-      import('react-beautiful-dnd').then(mod => {
-        return mod.Draggable;
-      }),
-    {ssr: false},
-  );
-
   const [state, dispatch] = useReducer(formReducer, INITIAL_STATE);
   const handleUpload = (e, index)=> {
     const fileUploaded = e.target.files[0];
@@ -44,10 +19,6 @@ export default function FunctionIndex() {
   const handleChange = (e, indexSection, data) =>{
     dispatch({ type:"CHANGE_TITLE", indexSection, name: e.target.name, value: e.target.value, data })
   }
-
-  // const handleChangeList = (e) => {
-  //   dispatch({ type: "CHANGE_INPUT", name: e.target.name, value: e.target.value })
-  // }
 
   const handleAddSection = () => {
     dispatch({ type: "ADD_SECTION" })
@@ -105,7 +76,6 @@ export default function FunctionIndex() {
                                       <div {...provided.draggableProps} {...provided.dragHandleProps} ref={provided.innerRef}>
                                        <InputSection 
                                         data = {item} 
-                                        id={`id-${index}`}
                                         handleUpload = {(e)=>handleUpload(e, index)}
                                         handleChange = {(e)=>handleChange(e, index, item)}
                                         handleDeleteSection = {()=>handleDeleteSection(index)}
