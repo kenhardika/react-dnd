@@ -1,105 +1,136 @@
-import { useReducer} from "react"
+import { useReducer } from "react";
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import InputSection from "../components/InputSection";
 import { formReducer, INITIAL_STATE } from "../utils/formReducer";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
-export default function FunctionIndex() {  
+export default function FunctionIndex() {
   const [state, dispatch] = useReducer(formReducer, INITIAL_STATE);
-  const handleUpload = (e, index)=> {
+  const handleUpload = (e, index) => {
     const fileUploaded = e.target.files[0];
-    if(!fileUploaded) return 
-    dispatch({  
-                type: "UPLOAD_IMAGE",
-                name: e.target.name, 
-                value: URL.createObjectURL(fileUploaded),
-                indexSection: index,
-              });
-  }
+    if (!fileUploaded) return;
+    dispatch({
+      type: "UPLOAD_IMAGE",
+      name: e.target.name,
+      value: URL.createObjectURL(fileUploaded),
+      indexSection: index,
+    });
+  };
 
-  const handleChange = (e, indexSection, data) =>{
-    dispatch({ type:"CHANGE_TITLE", indexSection, name: e.target.name, value: e.target.value, data })
-  }
+  const handleChange = (e, indexSection, data) => {
+    dispatch({
+      type: "CHANGE_TITLE",
+      indexSection,
+      name: e.target.name,
+      value: e.target.value,
+      data,
+    });
+  };
 
   const handleAddSection = () => {
-    dispatch({ type: "ADD_SECTION" })
-  }
+    dispatch({ type: "ADD_SECTION" });
+  };
 
-  const handleDeleteSection = (indexSection) => { 
+  const handleDeleteSection = (indexSection) => {
     dispatch({
       type: "DELETE_SECTION",
-      indexSection
-    })
-  }
+      indexSection,
+    });
+  };
 
   const handleSubmitAddList = (value, indexSection) => {
     dispatch({
-        type:"ADD_LIST",
-        value,
-        indexSection
-      })
-  }
+      type: "ADD_LIST",
+      value,
+      indexSection,
+    });
+  };
 
   const handleDeleteList = (indexSection, indexList) => {
     dispatch({
       type: "DELETE_LIST",
       indexSection,
-      indexList
-    })
-  }
+      indexList,
+    });
+  };
 
-  const handleOnDragEnd = (result)=> {
+  const handleOnDragEnd = (result) => {
     if (!result.destination) return;
     const items = Array.from(state);
     const [reorderedItem] = items.splice(result.source.index, 1);
     items.splice(result.destination.index, 0, reorderedItem);
-    dispatch({ type: "DRAG_AND_DROP", payload: items })
-  }
+    dispatch({ type: "DRAG_AND_DROP", payload: items });
+  };
 
-  const handleChangeListOrder = ( indexSection, payload)=> {
-    dispatch({ type: "DD_LIST", payload, indexSection })
-  }
+  const handleChangeListOrder = (indexSection, payload) => {
+    dispatch({ type: "DD_LIST", payload, indexSection });
+  };
 
   return (
-  <div className="h-screen bg-cyan-100">
-    <div className=" w-full bg-scroll flex flex-col 
-      justify-center items-center bg-cyan-100">
-      <div className="p-2 flex flex-col items-center gap-4"> 
-        <p>hello, proceed to add section </p>
-        <button className="w-[100px] border-solid border-2 
-          border-black rounded-lg p-2 active:translate-y-0.5" 
-            onClick={()=> handleAddSection()
-                    }> Add Section </button> 
+    <div className="h-screen bg-cyan-100">
+      <div
+        className=" w-full bg-scroll flex flex-col 
+      justify-center items-center bg-cyan-100"
+      >
+        <div className="p-2 flex flex-col items-center gap-4">
+          <p>hello, proceed to add section </p>
+          <button
+            className="w-[100px] border-solid border-2 
+          border-black rounded-lg p-2 active:translate-y-0.5"
+            onClick={() => handleAddSection()}
+          >
+            {" "}
+            Add Section{" "}
+          </button>
           <DragDropContext onDragEnd={handleOnDragEnd}>
             <Droppable droppableId="section">
-              { (provided)=> (
-                <div className='h-full w-full flex flex-col p-5 gap-5 items-center' {...provided.droppableProps} ref={provided.innerRef}> 
-                    {
-                      state?.map((item, index) => {
-                          return  <Draggable key = {`key-${index}`} draggableId={`id-${index}`} index={index}> 
-                                   {(provided)=>(
-                                      <div {...provided.draggableProps} {...provided.dragHandleProps} ref={provided.innerRef}>
-                                       <InputSection  
-                                        data = {item} 
-                                        handleUpload = {(e)=>handleUpload(e, index)}
-                                        handleChange = {(e)=>handleChange(e, index, item)}
-                                        handleDeleteSection = {()=>handleDeleteSection(index)}
-                                        handleDeleteList = {(indexList)=>handleDeleteList(index, indexList)}
-                                        handleSubmitAddList = {(value)=> handleSubmitAddList(value, index)}
-                                        handleChangeListOrder = {(payload)=>handleChangeListOrder(index, payload)}
-                                        />
-                                       </div>
-                                      )
-                                    } 
-                                  </Draggable>
-                      })
-                    } 
-                    {provided.placeholder}
-              </div>)
-              }
-           </Droppable>
+              {(provided) => (
+                <div
+                  className="h-full w-full flex flex-col p-5 gap-5 items-center"
+                  {...provided.droppableProps}
+                  ref={provided.innerRef}
+                >
+                  {state?.map((item, index) => {
+                    return (
+                      <Draggable
+                        key={`key-${index}`}
+                        draggableId={`id-${index}`}
+                        index={index}
+                      >
+                        {(provided) => (
+                          <div
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                            ref={provided.innerRef}
+                          >
+                            <InputSection
+                              data={item}
+                              handleUpload={(e) => handleUpload(e, index)}
+                              handleChange={(e) => handleChange(e, index, item)}
+                              handleDeleteSection={() =>
+                                handleDeleteSection(index)
+                              }
+                              handleDeleteList={(indexList) =>
+                                handleDeleteList(index, indexList)
+                              }
+                              handleSubmitAddList={(value) =>
+                                handleSubmitAddList(value, index)
+                              }
+                              handleChangeListOrder={(payload) =>
+                                handleChangeListOrder(index, payload)
+                              }
+                            />
+                          </div>
+                        )}
+                      </Draggable>
+                    );
+                  })}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
           </DragDropContext>
+        </div>
       </div>
     </div>
-  </div>
-  )
+  );
 }
