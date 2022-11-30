@@ -7,6 +7,7 @@ import { formReducer, INITIAL_STATE } from "../utils/formReducer";
 export default function FunctionIndex() {
   const [state, dispatch] = useReducer(formReducer, INITIAL_STATE);
   const [image, setImage] = useState();
+  const [croppedImage, setCropppedImage] = useState();
   const [showModal, setShowModal] = useState(false);
 
   const handleUpload = (e, index) => {
@@ -19,7 +20,6 @@ export default function FunctionIndex() {
     //   value: URL.createObjectURL(fileUploaded),
     //   indexSection: index,
     // });
-
        e.preventDefault();
        let files;
        if (e.dataTransfer) {
@@ -82,15 +82,14 @@ export default function FunctionIndex() {
   const handleChangeListOrder = (indexSection, payload) => {
     dispatch({ type: "DD_LIST", payload, indexSection });
   };
-
+  console.log(croppedImage);
   return (
     <div className="h-screen bg-cyan-100">
       {showModal ? (
         <ModalLayer
           onHide={() => setShowModal(false)}
-          onCrop={(file, cropData) => {
-            console.log(file);
-            console.log(cropData);
+          onCrop={(cropData) => {
+            setCropppedImage(cropData);
           }}
           image = {image}
         ></ModalLayer>
@@ -134,6 +133,7 @@ export default function FunctionIndex() {
                           >
                             <InputSection
                               data={item}
+                              croppedImage={croppedImage}
                               handleUpload={(e) => handleUpload(e, index)}
                               handleChange={(e) => handleChange(e, index, item)}
                               handleDeleteSection={() =>

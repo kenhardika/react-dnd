@@ -1,15 +1,19 @@
+import "cropperjs/dist/cropper.css";
 import React, { useState } from 'react';
 import { Cropper } from 'react-cropper';
 
+
 function ModalLayer({ onHide, onCrop, aspectRatio = 1, image,  }) {
   const [cropperInstance, setCropperInstance] = useState();
-  const [cropData, setCropData] = useState("#");
+  const [cropData, setCropData] = useState();
   const initCrop = () => {
      if (typeof cropperInstance !== "undefined") {
-       setCropData(cropperInstance.getCroppedCanvas().toDataURL());
-     }
+        // setCropData(cropperInstance.getCroppedCanvas().toDataURL());
+       onCrop(cropperInstance.getCroppedCanvas().toDataURL());
+       onHide();
+      }
+    // console.log(cropData);
     //  const cropData = cropperInstance.getCroppedCanvas().toDataURL();
-    //  const file = getBlobData(cropData);
     //  onCrop(file, cropData);
    };
   return (
