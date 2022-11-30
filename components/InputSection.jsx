@@ -12,7 +12,6 @@ function InputSection({
   handleChangeListOrder,
   handleDeleteSection,
   handleDeleteList,
-  croppedImage
 }) {
  
   const fileUpload = useRef();
@@ -42,7 +41,7 @@ function InputSection({
             delete
           </button>
         </div>
-        <div className="h-[300px] flex flex-col items-center gap-2 ">
+        <div className="h-auto flex flex-col items-center gap-2 ">
           <input
             className="rounded-lg w-full bg-gray-100 px-2"
             placeholder="input title"
@@ -59,9 +58,9 @@ function InputSection({
             accept="image/*"
             onChange={handleUpload}
           />
-          {croppedImage && (
+          {data?.image && (
             <Image
-              src={croppedImage}
+              src={data.image}
               width={200}
               height={70}
               className="max-h-[180px]"

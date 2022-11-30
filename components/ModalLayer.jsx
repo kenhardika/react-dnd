@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Cropper } from 'react-cropper';
 
 
-function ModalLayer({ onHide, onCrop, aspectRatio = 1, image,  }) {
+function ModalLayer({ onHide, onCrop, aspectRatio = 1, image="",  }) {
   const [cropperInstance, setCropperInstance] = useState();
   const [cropData, setCropData] = useState();
   const initCrop = () => {
