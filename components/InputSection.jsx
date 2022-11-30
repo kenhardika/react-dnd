@@ -5,6 +5,7 @@ import InputList from "./InputList";
 
 function InputSection({
   data,
+  showModal,
   handleUpload,
   handleChange,
   handleSubmitAddList,
@@ -27,6 +28,7 @@ function InputSection({
 
   return (
     <>
+      
       <div
         className="w-[500px] h-auto flex flex-col p-5 
             bg-white rounded-lg gap-5"
@@ -55,6 +57,7 @@ function InputSection({
             className="hidden"
             ref={fileUpload}
             accept="image/*"
+            onChange={handleUpload}
           />
           {data?.image && (
             <Image
@@ -69,8 +72,10 @@ function InputSection({
           <button
             className="rounded-xl p-2 bg-blue-400 text-sm text-white"
             onClick={() => {
+              showModal();
               fileUpload.current.click();
-            }}
+            }
+            }
           > Upload </button>
           <div className="w-[90%] flex flex-col bg-gray-100 rounded-sm p-2 gap-2 justify-center items-center">
             <DragDropContext onDragEnd={handleOnDragEnd}>

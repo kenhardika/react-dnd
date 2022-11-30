@@ -1,10 +1,10 @@
 import Image from "next/image";
-import { memo } from "react";
+import { memo, useState } from "react";
 import { Cropper } from "react-cropper";
 
 function ModalCropper({ defaultImage }) {
-  const [image, setImage] = useState();
-  const [cropData, setCropData] = useState("");
+  const [image, setImage] = useState(defaultImage);
+  const [cropData, setCropData] = useState();
   const [cropper, setCropper] = useState();
 
   const onChange = (e) => {
@@ -30,16 +30,15 @@ function ModalCropper({ defaultImage }) {
 
   return (
     <div>
-      <div style={{ width: "100%" }}>
+      <div className="w-full">
         <input type="file" onChange={onChange} />
         <button>Use default img</button>
         <br />
         <br />
         <Cropper
-          style={{ height: 400, width: "100%" }}
+          className="w-full h-[400px]"
           zoomTo={0.5}
           initialAspectRatio={1}
-          preview=".img-preview"
           src={image}
           viewMode={1}
           minCropBoxHeight={10}
@@ -55,27 +54,21 @@ function ModalCropper({ defaultImage }) {
         />
       </div>
       <div>
-        <div className="box" style={{ width: "50%", float: "right" }}>
+        <div className="w-1/2 float-right">
           <h1>Preview</h1>
-          <div
-            className="img-preview"
-            style={{ width: "100%", float: "left", height: "300px" }}
-          />
+          <div className="w-full float-left h-[300px]" />
         </div>
-        <div
-          className="box"
-          style={{ width: "50%", float: "right", height: "300px" }}
-        >
+        <div className="w-1/2 float-right h-[300px]">
           <h1>
             <span>Crop</span>
-            <button style={{ float: "right" }} onClick={getCropData}>
+            <button className="float-right" onClick={getCropData}>
               Crop Image
             </button>
           </h1>
-          <Image style={{ width: "100%" }} src={cropData} alt="cropped" />
+          <Image className="w-full" src={cropData} alt="cropped" />
         </div>
       </div>
-      <br style={{ clear: "both" }} />
+      <br className="clear-both" />
     </div>
   );
 }

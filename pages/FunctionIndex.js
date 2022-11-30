@@ -1,19 +1,37 @@
-import { useReducer } from "react";
+import { useReducer, useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import InputSection from "../components/InputSection";
+import ModalLayer from "../components/ModalLayer";
 import { formReducer, INITIAL_STATE } from "../utils/formReducer";
 
 export default function FunctionIndex() {
   const [state, dispatch] = useReducer(formReducer, INITIAL_STATE);
+  const [image, setImage] = useState();
+  const [showModal, setShowModal] = useState(false);
+
   const handleUpload = (e, index) => {
-    const fileUploaded = e.target.files[0];
-    if (!fileUploaded) return;
-    dispatch({
-      type: "UPLOAD_IMAGE",
-      name: e.target.name,
-      value: URL.createObjectURL(fileUploaded),
-      indexSection: index,
-    });
+    // const fileUploaded = e.target.files[0];
+    // if (!fileUploaded) return;
+    // setImage(URL.createObjectURL(fileUploaded));
+    // dispatch({
+    //   type: "UPLOAD_IMAGE",
+    //   name: e.target.name,
+    //   value: URL.createObjectURL(fileUploaded),
+    //   indexSection: index,
+    // });
+
+       e.preventDefault();
+       let files;
+       if (e.dataTransfer) {
+         files = e.dataTransfer.files;
+       } else if (e.target) {
+         files = e.target.files;
+       }
+       const reader = new FileReader();
+       reader.onload = () => {
+         setImage(reader.result);
+       };
+       reader.readAsDataURL(files[0]);
   };
 
   const handleChange = (e, indexSection, data) => {
@@ -67,6 +85,18 @@ export default function FunctionIndex() {
 
   return (
     <div className="h-screen bg-cyan-100">
+      {showModal ? (
+        <ModalLayer
+          onHide={() => setShowModal(false)}
+          onCrop={(file, cropData) => {
+            console.log(file);
+            console.log(cropData);
+          }}
+          image = {image}
+        ></ModalLayer>
+      ) : (
+        ""
+      )}
       <div
         className=" w-full bg-scroll flex flex-col 
       justify-center items-center bg-cyan-100"
@@ -118,6 +148,7 @@ export default function FunctionIndex() {
                               handleChangeListOrder={(payload) =>
                                 handleChangeListOrder(index, payload)
                               }
+                              showModal={() => setShowModal(true)}
                             />
                           </div>
                         )}
