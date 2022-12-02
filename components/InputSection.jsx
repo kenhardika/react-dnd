@@ -25,7 +25,6 @@ function InputSection({
     items.splice(result.destination.index, 0, reorderedItem);
     handleChangeListOrder(items);
   };
-  // console.log(croppedImage);
   return (
     <>
       <div
@@ -36,7 +35,7 @@ function InputSection({
           <button
             className="px-2 bg-red-500 
                     text-white text-sm rounded-xl"
-            onClick={() => handleDeleteSection()}
+            onClick={handleDeleteSection}
           >
             delete
           </button>

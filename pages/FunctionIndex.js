@@ -5,44 +5,44 @@ import ModalLayer from "../components/ModalLayer";
 import { formReducer, INITIAL_STATE } from "../utils/formReducer";
 
 export default function FunctionIndex() {
+
+  const defaultState = { value:"", index:"" }
+
   const [state, dispatch] = useReducer(formReducer, INITIAL_STATE);
-  const [image, setImage] = useState({ value:"", index:"" });
-  const [croppedImage, setCropppedImage] = useState();
+  const [image, setImage] = useState(defaultState);
   const [showModal, setShowModal] = useState(false);
 
-  const handleUpload = (e, index) => {
-    // const fileUploaded = e.target.files[0];
-    // if (!fileUploaded) return;
-    // setImage(URL.createObjectURL(fileUploaded));
-    // dispatch({
-    //   type: "UPLOAD_IMAGE",
-    //   name: e.target.name,
-    //   value: URL.createObjectURL(fileUploaded),
-    //   indexSection: index,
-    // });
-       e.preventDefault();
-       let files;
-       if (e.dataTransfer) {
-         files = e.dataTransfer.files;
-       } else if (e.target) {
-         files = e.target.files;
-       }
-       const reader = new FileReader();
-       reader.onload = () => {
-         setImage({
-           value: reader.result,
-           index
-         })
-         dispatch({
-           type: "UPLOAD_IMAGE",
-           name: "image",
-           value: reader.result,
-           indexSection: index
-         });
-       };
-       reader.readAsDataURL(files[0]);
-  };
+   const handleUpload = (e, index) => {
+     e.preventDefault();
+     let files;
+     if (e.dataTransfer) {
+       files = e.dataTransfer.files;
+     } else if (e.target) {
+       files = e.target.files;
+     }
+     const reader = new FileReader();
+     reader.onload = () => {
+       if (!reader.result) return;
+       setImage({
+         value: reader.result,
+         index,
+       });
+       dispatch({
+         type: "UPLOAD_IMAGE",
+         name: "image",
+         value: reader.result,
+         indexSection: index,
+       });
+     };
+    reader.readAsDataURL(files[0]);
+   };
 
+  // const handleDeleteImage(){
+  //   dispatch({
+
+  //   })
+  // }
+  
   const handleChange = (e, indexSection, data) => {
     dispatch({
       type: "CHANGE_TITLE",
@@ -95,10 +95,11 @@ export default function FunctionIndex() {
     <div className="h-screen bg-cyan-100">
       {showModal ? (
         <ModalLayer
-          onHide={() => setShowModal(false)}
+          onHide={() => {
+            setShowModal(false);
+            setImage(defaultState);
+          }}
           onCrop={(cropData) => {
-            // setCropppedImage(cropData);
-            console.log(cropData);
             dispatch({
               type: "UPLOAD_IMAGE",
               name: "image",
@@ -122,8 +123,7 @@ export default function FunctionIndex() {
           border-black rounded-lg p-2 active:translate-y-0.5"
             onClick={() => handleAddSection()}
           >
-            {" "}
-            Add Section{" "}
+            Add Section
           </button>
           <DragDropContext onDragEnd={handleOnDragEnd}>
             <Droppable droppableId="section">
@@ -162,7 +162,9 @@ export default function FunctionIndex() {
                               handleChangeListOrder={(payload) =>
                                 handleChangeListOrder(index, payload)
                               }
-                              showModal={() => setShowModal(true)}
+                              showModal={() => {
+                                setShowModal(true)
+                              }}
                             />
                           </div>
                         )}
