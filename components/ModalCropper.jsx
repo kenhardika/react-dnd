@@ -63,4 +63,8 @@ function ModalCropper({
   );
 }
 
-export default memo(ModalCropper);
+function areNonFuncPropsEquals(prevProps, nextProps) {
+  return prevProps.image === nextProps.image;
+}
+
+export default memo(ModalCropper, areNonFuncPropsEquals);

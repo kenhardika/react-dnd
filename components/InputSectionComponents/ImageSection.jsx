@@ -1,7 +1,7 @@
 import Image from "next/image";
-import React from "react";
+import React, { memo } from "react";
 
-function ImageSection({ image, showModal }) {
+function ImageSection({ image, showModal, deleteImage }) {
   return (
     <div className="h-auto flex flex-col items-center gap-2 ">
       {image && (
@@ -13,14 +13,37 @@ function ImageSection({ image, showModal }) {
           alt=""
         />
       )}
-      <button
-        className="rounded-xl p-2 bg-blue-400 text-sm text-white"
-        onClick={showModal}
-      >
-        Upload
-      </button>
+      {image ? (
+        <div className="flex flex-row gap-5">
+          <button
+            className="rounded-xl p-2 bg-blue-400 text-sm text-white"
+            onClick={showModal}
+          >
+            Change
+          </button>
+
+          <button
+            className="rounded-xl p-2 bg-red-400 text-sm text-white"
+            onClick={deleteImage}
+          >
+            Delete
+          </button>
+        </div>
+      ) : (
+        <button
+          className="rounded-xl p-2 bg-blue-400 text-sm text-white"
+          onClick={showModal}
+        >
+          Upload
+        </button>
+      )}
     </div>
   );
 }
 
-export default ImageSection;
+function areNonFuncPropsEquals(prevProps, nextProps) {
+  return prevProps.image === nextProps.image;
+}
+
+export default memo(ImageSection, areNonFuncPropsEquals);
+

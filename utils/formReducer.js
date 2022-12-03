@@ -17,12 +17,10 @@ export const formReducer = (state, action) => {
   switch (action.type) {
     case "CHANGE_TITLE":
     case "UPLOAD_IMAGE":
+    case "DELETE_IMAGE":
       newSection[name] = value;
       newData[indexSection] = newSection;
       return newData;
-      // newSection[name] = value;
-      // newData[indexSection] = newSection;
-      // return newData;
     case "ADD_LIST":
       const addNewList = [...newSection.list];
       addNewList.push(value);
@@ -31,10 +29,8 @@ export const formReducer = (state, action) => {
       return newData;
     case "ADD_SECTION":
       return [...state, emptySection];
-    case "DELETE_IMAGE":
-      return;
     case "DELETE_SECTION":
-      newData.splice(indexSection, 1); 
+      newData.splice(indexSection, 1);
       return newData;
     case "DELETE_LIST":
       const newList = [...newSection.list];

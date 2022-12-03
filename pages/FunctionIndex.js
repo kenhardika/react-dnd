@@ -3,6 +3,7 @@ import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import InputSection from "../components/InputSection";
 import FormTitleSection from "../components/InputSectionComponents/FormTitleSection";
 import ImageSection from "../components/InputSectionComponents/ImageSection";
+import ListSection from "../components/InputSectionComponents/ListSection";
 import ModalCropper from "../components/ModalCropper";
 import ModalLayer from "../components/ModalLayer";
 import { formReducer, INITIAL_STATE } from "../utils/formReducer";
@@ -38,17 +39,18 @@ export default function FunctionIndex() {
   const handleDeleteImage = (indexSection) => {
     dispatch({
       type: "DELETE_IMAGE",
-      indexSection
-    })
+      name: "image",
+      value: "",
+      indexSection,
+    });
   }
   
-  const handleChange = (e, indexSection, data) => {
+  const handleChange = (e, indexSection) => {
     dispatch({
       type: "CHANGE_TITLE",
       indexSection,
       name: e.target.name,
       value: e.target.value,
-      data,
     });
   };
 
@@ -72,6 +74,7 @@ export default function FunctionIndex() {
   };
 
   const handleDeleteList = (indexSection, indexList) => {
+    console.log("Deletedd list");
     dispatch({
       type: "DELETE_LIST",
       indexSection,
@@ -84,7 +87,6 @@ export default function FunctionIndex() {
     const items = Array.from(state);
     const [reorderedItem] = items.splice(result.source.index, 1);
     items.splice(result.destination.index, 0, reorderedItem);
-    console.log(items);
     dispatch({ type: "DRAG_AND_DROP", payload: items });
   };
 
@@ -153,25 +155,11 @@ export default function FunctionIndex() {
                             ref={provided.innerRef}
                           >
                             <InputSection
-                              data={item}
-                              handleDeleteList={(indexList) =>
-                                handleDeleteList(index, indexList)
-                              }
-                              handleSubmitAddList={(value) =>
-                                handleSubmitAddList(value, index)
-                              }
-                              handleChangeListOrder={(payload) =>
-                                handleChangeListOrder(index, payload)
-                              }
-                              handleDeleteSection={() =>
-                                handleDeleteSection(index)
-                              }
+                              deleteSection={() => handleDeleteSection(index)}
                             >
                               <FormTitleSection
                                 title={item.title}
-                                handleChange={(e) =>
-                                  handleChange(e, index, item)
-                                }
+                                handleChange={(e) => handleChange(e, index)}
                               />
                               <ImageSection
                                 image={item.image}
@@ -179,6 +167,20 @@ export default function FunctionIndex() {
                                   setImage((c) => ({ ...c, index }));
                                   setShowModal(true);
                                 }}
+                                deleteImage={() => handleDeleteImage(index)}
+                              />
+
+                              <ListSection
+                                dataList={item.list}
+                                submitAddList={(value) =>
+                                  handleSubmitAddList(value, index)
+                                }
+                                changeListOrder={(payload) =>
+                                  handleChangeListOrder(index, payload)
+                                }
+                                deleteList={(indexList) =>
+                                  handleDeleteList(index, indexList)
+                                }
                               />
                             </InputSection>
                           </div>
