@@ -21,30 +21,37 @@ export const formReducer = (state, action) => {
       newSection[name] = value;
       newData[indexSection] = newSection;
       return newData;
+    
     case "ADD_LIST":
       const addNewList = [...newSection.list];
       addNewList.push(value);
       newSection.list = addNewList;
       newData[indexSection] = newSection;
       return newData;
+    
     case "ADD_SECTION":
       return [...state, emptySection];
+    
     case "DELETE_SECTION":
       newData.splice(indexSection, 1);
       return newData;
+    
     case "DELETE_LIST":
       const newList = [...newSection.list];
       newList.splice(indexList, 1);
       newSection.list = newList;
       newData[indexSection] = newSection;
       return newData;
+    
     case "DRAG_AND_DROP":
       return payload;
+    
     case "DD_LIST":
       newSection.list = payload;
       newData[indexSection] = newSection;
       return newData;
+    
     default:
-      return state;
+      return newData;
   }
 };

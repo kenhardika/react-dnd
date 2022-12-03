@@ -10,7 +10,6 @@ function ListSection({ dataList, deleteList, submitAddList, changeListOrder }) {
     const [reorderedItem] = items.splice(result.source.index, 1);
     items.splice(result.destination.index, 0, reorderedItem);
     changeListOrder(items);
-    console.log(items); 
   };
 
   return (

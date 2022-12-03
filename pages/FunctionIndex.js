@@ -74,7 +74,6 @@ export default function FunctionIndex() {
   };
 
   const handleDeleteList = (indexSection, indexList) => {
-    console.log("Deletedd list");
     dispatch({
       type: "DELETE_LIST",
       indexSection,

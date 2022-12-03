@@ -41,7 +41,6 @@ function ModalCropper({
         type="file"
         name="image"
         className=""
-        // ref={fileUpload}
         accept="image/*"
         onChange={(e)=>handleUpload(e)}
       />
