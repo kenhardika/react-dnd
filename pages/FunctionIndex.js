@@ -115,7 +115,9 @@ export default function FunctionIndex() {
               setImage(defaultState);
             }}
             image={image.value}
-            handleUpload={(e) => handleUpload(e, image.index)}
+            handleUpload={(e) => 
+              handleUpload(e, image.index)
+            }
           />
         </ModalLayer>
       )}

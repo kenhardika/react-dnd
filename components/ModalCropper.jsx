@@ -17,7 +17,7 @@ function ModalCropper({
     }
   };
   return (
-    <div className="h-full w-full flex flex-col justify-center items-center bg-gray-300">
+    <div className="h-full w-full flex flex-col justify-center items-center p-5 gap-3 bg-gray-300">
       <Cropper
         src={image}
         style={{ height: 400, width: "100%" }}
@@ -44,7 +44,7 @@ function ModalCropper({
         accept="image/*"
         onChange={(e)=>handleUpload(e)}
       />
-      <div className="mt-16px w-full flex flex-row justify-center items-center">
+      <div className="mt-16px w-full flex flex-row justify-center items-center gap-5">
         <button
           className=" bg-blue-200 w-[80px] rounded-lg text-white "
           onClick={initCrop}
