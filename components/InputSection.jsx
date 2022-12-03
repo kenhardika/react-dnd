@@ -7,11 +7,10 @@ function InputSection({
   data,
   showModal,
   handleUpload,
-  handleChange,
   handleSubmitAddList,
   handleChangeListOrder,
-  handleDeleteSection,
   handleDeleteList,
+  children
 }) {
  
   const fileUpload = useRef();
@@ -40,15 +39,8 @@ function InputSection({
             delete
           </button>
         </div>
-        <div className="h-auto flex flex-col items-center gap-2 ">
-          <input
-            className="rounded-lg w-full bg-gray-100 px-2"
-            placeholder="input title"
-            type="text"
-            name="title"
-            defaultValue={data?.title}
-            onChange={(e) => handleChange(e)}
-          />
+        {children}
+        <div className="h-auto flex flex-col items-center gap-2 "> 
           <input
             type="file"
             name="image"
@@ -73,10 +65,10 @@ function InputSection({
               showModal();
               fileUpload.current.click();
             }}
-          >
-            {" "}
-            Upload{" "}
+            >
+            Upload
           </button>
+        </div>
           <div className="w-[90%] flex flex-col bg-gray-100 rounded-sm p-2 gap-2 justify-center items-center">
             <DragDropContext onDragEnd={handleOnDragEnd}>
               <Droppable droppableId="list">
@@ -145,7 +137,6 @@ function InputSection({
               + list
             </button>
           </div>
-        </div>
       </div>
     </>
   );

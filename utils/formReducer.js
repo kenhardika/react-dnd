@@ -18,6 +18,7 @@ export const formReducer = (state, action) => {
     case "CHANGE_TITLE":
       newSection[name] = value;
       newData[indexSection] = newSection;
+      console.log('hit change title');
       return newData;
     case "UPLOAD_IMAGE":
       newSection[name] = value;
@@ -34,7 +35,8 @@ export const formReducer = (state, action) => {
     case "DELETE_IMAGE":
       return;
     case "DELETE_SECTION":
-      newData.splice(indexSection, 1);
+      newData.splice(indexSection, 1); // check again, error
+
       return newData;
     case "DELETE_LIST":
       const newList = [...newSection.list];
@@ -43,6 +45,7 @@ export const formReducer = (state, action) => {
       newData[indexSection] = newSection;
       return newData;
     case "DRAG_AND_DROP":
+      console.log(payload);
       return payload;
     case "DD_LIST":
       newSection.list = payload;

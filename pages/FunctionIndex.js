@@ -1,6 +1,8 @@
 import { useReducer, useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import InputSection from "../components/InputSection";
+import DeleteSection from "../components/InputSectionComponents/deleteSection";
+import FormTitleSection from "../components/InputSectionComponents/FormTitleSection";
 import ModalLayer from "../components/ModalLayer";
 import { formReducer, INITIAL_STATE } from "../utils/formReducer";
 
@@ -27,21 +29,17 @@ export default function FunctionIndex() {
          value: reader.result,
          index,
        });
-       dispatch({
-         type: "UPLOAD_IMAGE",
-         name: "image",
-         value: reader.result,
-         indexSection: index,
-       });
      };
-    reader.readAsDataURL(files[0]);
+     if(reader.error) return
+     reader.readAsDataURL(files[0]);
    };
 
-  // const handleDeleteImage(){
-  //   dispatch({
-
-  //   })
-  // }
+  const handleDeleteImage = (indexSection) => {
+    dispatch({
+      type: "DELETE_IMAGE",
+      indexSection
+    })
+  }
   
   const handleChange = (e, indexSection, data) => {
     dispatch({
@@ -85,12 +83,14 @@ export default function FunctionIndex() {
     const items = Array.from(state);
     const [reorderedItem] = items.splice(result.source.index, 1);
     items.splice(result.destination.index, 0, reorderedItem);
+    console.log(items);
     dispatch({ type: "DRAG_AND_DROP", payload: items });
   };
 
   const handleChangeListOrder = (indexSection, payload) => {
     dispatch({ type: "DD_LIST", payload, indexSection });
   };
+  console.log(state)
   return (
     <div className="h-screen bg-cyan-100">
       {showModal ? (
@@ -149,10 +149,7 @@ export default function FunctionIndex() {
                             <InputSection
                               data={item}
                               handleUpload={(e) => handleUpload(e, index)}
-                              handleChange={(e) => handleChange(e, index, item)}
-                              handleDeleteSection={() =>
-                                handleDeleteSection(index)
-                              }
+                              
                               handleDeleteList={(indexList) =>
                                 handleDeleteList(index, indexList)
                               }
@@ -163,9 +160,20 @@ export default function FunctionIndex() {
                                 handleChangeListOrder(index, payload)
                               }
                               showModal={() => {
-                                setShowModal(true)
+                                setShowModal(true);
                               }}
-                            />
+                            >
+                              <DeleteSection
+                                handleDeleteSection={() =>
+                                  handleDeleteSection(index)
+                                }
+                              />
+                              <FormTitleSection
+                                title={ item.title }
+                                handleChange={(e) => handleChange(e, index, item)}
+                              />
+
+                            </InputSection>
                           </div>
                         )}
                       </Draggable>
