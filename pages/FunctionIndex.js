@@ -1,8 +1,9 @@
 import { useReducer, useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import InputSection from "../components/InputSection";
-import DeleteSection from "../components/InputSectionComponents/deleteSection";
 import FormTitleSection from "../components/InputSectionComponents/FormTitleSection";
+import ImageSection from "../components/InputSectionComponents/ImageSection";
+import ModalCropper from "../components/ModalCropper";
 import ModalLayer from "../components/ModalLayer";
 import { formReducer, INITIAL_STATE } from "../utils/formReducer";
 
@@ -30,7 +31,7 @@ export default function FunctionIndex() {
          index,
        });
      };
-     if(reader.error) return
+     if (reader.error || files[0] === undefined) return
      reader.readAsDataURL(files[0]);
    };
 
@@ -90,27 +91,32 @@ export default function FunctionIndex() {
   const handleChangeListOrder = (indexSection, payload) => {
     dispatch({ type: "DD_LIST", payload, indexSection });
   };
-  console.log(state)
   return (
     <div className="h-screen bg-cyan-100">
-      {showModal ? (
+      {showModal && (
         <ModalLayer
           onHide={() => {
             setShowModal(false);
             setImage(defaultState);
           }}
-          onCrop={(cropData) => {
-            dispatch({
-              type: "UPLOAD_IMAGE",
-              name: "image",
-              value: cropData,
-              indexSection: image.index
-            });
-          }}
-          image = {image.value}
-        ></ModalLayer>
-      ) : (
-        ""
+        >
+          <ModalCropper
+            onCrop={(cropData) => {
+              dispatch({
+                type: "UPLOAD_IMAGE",
+                name: "image",
+                value: cropData,
+                indexSection: image.index,
+              });
+            }}
+            onHide={() => {
+              setShowModal(false);
+              setImage(defaultState);
+            }}
+            image={image.value}
+            handleUpload={(e) => handleUpload(e, image.index)}
+          />
+        </ModalLayer>
       )}
       <div
         className=" w-full bg-scroll flex flex-col 
@@ -148,8 +154,6 @@ export default function FunctionIndex() {
                           >
                             <InputSection
                               data={item}
-                              handleUpload={(e) => handleUpload(e, index)}
-                              
                               handleDeleteList={(indexList) =>
                                 handleDeleteList(index, indexList)
                               }
@@ -159,20 +163,23 @@ export default function FunctionIndex() {
                               handleChangeListOrder={(payload) =>
                                 handleChangeListOrder(index, payload)
                               }
-                              showModal={() => {
-                                setShowModal(true);
-                              }}
+                              handleDeleteSection={() =>
+                                handleDeleteSection(index)
+                              }
                             >
-                              <DeleteSection
-                                handleDeleteSection={() =>
-                                  handleDeleteSection(index)
+                              <FormTitleSection
+                                title={item.title}
+                                handleChange={(e) =>
+                                  handleChange(e, index, item)
                                 }
                               />
-                              <FormTitleSection
-                                title={ item.title }
-                                handleChange={(e) => handleChange(e, index, item)}
+                              <ImageSection
+                                image={item.image}
+                                showModal={() => {
+                                  setImage((c) => ({ ...c, index }));
+                                  setShowModal(true);
+                                }}
                               />
-
                             </InputSection>
                           </div>
                         )}
