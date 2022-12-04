@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import InputSectionClass from '../components_class/inputSectionClass';
 import FormTitleClass from '../components_class/InputSectionComponents/FormTitleClass';
+import ImageClass from '../components_class/InputSectionComponents/ImageClass';
 
 class ClassIndex extends Component {
   constructor(props) {
@@ -60,7 +61,7 @@ class ClassIndex extends Component {
           image: "",
           list: [],
     }
-    const { sections } = this.state;
+    const { sections, showModal, image } = this.state;
   //   const initialData = [{ title: "buku sejarah", image: "", list: ["list1", "list2"] },
   // { title: "buku tabungan", image: "", list: ["list1"] }]
     return (
@@ -100,6 +101,15 @@ class ClassIndex extends Component {
                       } })}
                       title = {section.title}
                     />
+
+                    <ImageClass
+                      image = {image.value}
+                      showModal={this.setState({ showModal: !showModal })}
+                      deleteImage = {()=>console.log("delete"+" "+ index)}
+                    >
+                      
+                    </ImageClass>
+
                   </InputSectionClass>
                 )}
             </div>

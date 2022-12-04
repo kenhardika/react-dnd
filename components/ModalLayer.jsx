@@ -1,4 +1,3 @@
-import "cropperjs/dist/cropper.css";
 import React from "react";
 
 function ModalLayer({
@@ -7,7 +6,7 @@ function ModalLayer({
 }) {
   return (
     <div className="w-screen h-screen fixed backdrop-blur-md flex justify-center items-center">
-      <div className="w-[800px] h-[500px] flex flex-col rounded-lg bg-white">
+      <div className="w-[800px] h-[600px] flex flex-col rounded-lg bg-white">
         <div className="w-full h-[50px] flex justify-end items-center p-2 ">
           <button
             onClick={() => onHide()}

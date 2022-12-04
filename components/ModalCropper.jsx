@@ -1,3 +1,4 @@
+import "cropperjs/dist/cropper.css";
 import { memo, useState } from "react";
 import { Cropper } from "react-cropper";
 
@@ -40,7 +41,7 @@ function ModalCropper({
       <input
         type="file"
         name="image"
-        className=""
+        className="h-[50px]"
         accept="image/*"
         onChange={(e)=>handleUpload(e)}
       />
