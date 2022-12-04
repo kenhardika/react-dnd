@@ -80,6 +80,10 @@ export default function FunctionIndex() {
       indexList,
     });
   };
+  
+  const handleChangeListOrder = (indexSection, payload) => {
+    dispatch({ type: "DD_LIST", payload, indexSection });
+  };
 
   const handleOnDragEnd = (result) => {
     if (!result.destination) return;
@@ -89,9 +93,6 @@ export default function FunctionIndex() {
     dispatch({ type: "DRAG_AND_DROP", payload: items });
   };
 
-  const handleChangeListOrder = (indexSection, payload) => {
-    dispatch({ type: "DD_LIST", payload, indexSection });
-  };
   return (
     <div className="h-screen bg-cyan-100">
       {showModal && (

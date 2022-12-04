@@ -1,7 +1,6 @@
 import "cropperjs/dist/cropper.css";
 import React from "react";
 
-
 function ModalLayer({
   children,
   onHide,
