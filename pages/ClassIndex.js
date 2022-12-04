@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import InputSectionClass from '../components_class/inputSectionClass';
 import FormTitleClass from '../components_class/InputSectionComponents/FormTitleClass';
 import ImageClass from '../components_class/InputSectionComponents/ImageClass';
+import ModalLayerClass from '../components_class/ModalLayerClass';
 
 class ClassIndex extends Component {
   constructor(props) {
@@ -66,8 +67,15 @@ class ClassIndex extends Component {
   // { title: "buku tabungan", image: "", list: ["list1"] }]
     return (
       <>
+        {
+          showModal &&(
+            <ModalLayerClass
+              onHide={() => this.setState({ showModal: !showModal })}
+              
+          ></ModalLayerClass>)
+        }
         <div
-          className=" w-full bg-scroll flex flex-col 
+          className=" w-full h-[900px] bg-scroll flex flex-col 
       justify-center items-center bg-cyan-100"
         >
           <div className="p-2 flex flex-col items-center gap-4">
@@ -104,7 +112,7 @@ class ClassIndex extends Component {
 
                     <ImageClass
                       image = {image.value}
-                      showModal={this.setState({ showModal: !showModal })}
+                      showModal={()=> this.setState({ showModal: !showModal })}
                       deleteImage = {()=>console.log("delete"+" "+ index)}
                     >
                       
