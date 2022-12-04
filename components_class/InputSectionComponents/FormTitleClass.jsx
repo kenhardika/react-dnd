@@ -1,12 +1,17 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 
-class FormTitleClass extends Component {
+class FormTitleClass extends PureComponent {
   render() {
-    const { title } = this.props
+    const { title, handleChange } = this.props;
     return (
-      <div>
-        
-      </div>
+      <input
+        className="rounded-lg w-[80%] bg-gray-100 px-2"
+        placeholder="input title"
+        type="text"
+        name="title"
+        value={title}
+        onChange={(e) => handleChange(e)}
+      />
     );
   }
 }

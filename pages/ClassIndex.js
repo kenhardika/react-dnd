@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import InputSectionClass from '../components_class/inputSectionClass';
+import FormTitleClass from '../components_class/InputSectionComponents/FormTitleClass';
 
 class ClassIndex extends Component {
   constructor(props) {
@@ -87,10 +88,18 @@ class ClassIndex extends Component {
                       getData(section) {
                         const newData = [...section];
                         newData.splice(index, 1);
-                        return newData
+                        return newData;
                      } })}
                   >
-                    
+                    <FormTitleClass
+                      handleChange={(e) => this.handleUpdateSection({
+                        getData(section) { 
+                          const newData = [...section];
+                          newData[index][e.target.name] = e.target.value;
+                          return newData;
+                      } })}
+                      title = {section.title}
+                    />
                   </InputSectionClass>
                 )}
             </div>
