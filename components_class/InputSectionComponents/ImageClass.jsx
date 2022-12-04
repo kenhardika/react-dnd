@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react';
 
 class ImageClass extends PureComponent {
   render() {
-    const { image, showModal, deleteImage, } = this.props;
+    const { image, handleUpdateState, deleteImage } = this.props;
     return (
       <div className="h-auto flex flex-col items-center gap-2 ">
         {image && (
@@ -19,7 +19,7 @@ class ImageClass extends PureComponent {
           <div className="flex flex-row gap-5">
             <button
               className="rounded-xl p-2 bg-blue-400 text-sm text-white"
-              onClick={showModal}
+              onClick={handleUpdateState}
             >
               Change
             </button>
@@ -34,7 +34,7 @@ class ImageClass extends PureComponent {
         ) : (
           <button
             className="rounded-xl p-2 bg-blue-400 text-sm text-white"
-            onClick={showModal}
+            onClick={handleUpdateState}
           >
             Upload
           </button>

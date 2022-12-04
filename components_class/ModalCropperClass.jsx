@@ -1,5 +1,7 @@
+import "cropperjs/dist/cropper.css";
 import React, { PureComponent } from 'react';
 import { Cropper } from 'react-cropper';
+
 
 class ModalCropperClass extends PureComponent {
   constructor(props) {
