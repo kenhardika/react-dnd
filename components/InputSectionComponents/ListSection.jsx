@@ -1,6 +1,6 @@
 import React, { memo, useState } from 'react';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
-import InputList from '../InputList';
+import InputList from './InputList';
 
 function ListSection({ dataList, deleteList, submitAddList, changeListOrder }) {
   const [showInput, setShowInput] = useState(false);

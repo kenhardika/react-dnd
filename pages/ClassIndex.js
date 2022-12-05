@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import InputSectionClass from '../components_class/inputSectionClass';
 import FormTitleClass from '../components_class/InputSectionComponents/FormTitleClass';
 import ImageClass from '../components_class/InputSectionComponents/ImageClass';
+import ListClass from '../components_class/InputSectionComponents/ListClass';
 import ModalCropperClass from '../components_class/ModalCropperClass';
 import ModalLayerClass from '../components_class/ModalLayerClass';
 
@@ -142,7 +143,7 @@ class ClassIndex extends Component {
                     <FormTitleClass
                       handleChange={(e) =>
                         this.handleUpdateSection({
-                          getData(section) {
+                          getData(section, index = index) {
                             const newData = [...section];
                             newData[index][e.target.name] = e.target.value;
                             return newData;
@@ -166,9 +167,19 @@ class ClassIndex extends Component {
                         })
                       }
                       deleteImage={() => console.log("delete" + " " + index)}
-                    ></ImageClass>
+                    />
 
-                    
+                    <ListClass
+                      dataList={section.list}
+                      changeListOrder={(item)=> console.log(item)}
+                      // deleteList={(indexList) => this.handleUpdateSection({
+                      //   getData(section, indexSection = index) {
+                      //     const newData = [...section];
+                          // newData[indexSection].list[indexList] = 
+                      //  } }) }
+                      // submitAddList = 
+                      // changeListOrder = 
+                    />
 
                   </InputSectionClass>
                 ))}
