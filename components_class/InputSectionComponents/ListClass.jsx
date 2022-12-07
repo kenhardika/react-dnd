@@ -9,12 +9,12 @@ class ListClass extends PureComponent {
       showInput: false,
     };
   }
-  handleOnDragEnd = (result) => {
+  handleOnDragEnd = (result, dataList, changeListOrder) => {
     if (!result.destination) return;
     const items = Array.from(dataList);
     const [reorderedItem] = items.splice(result.source.index, 1);
     items.splice(result.destination.index, 0, reorderedItem);
-    // this.props.changeListOrder(items);
+    changeListOrder(items);
   };
 
   changeShowInput = (value) => { 
@@ -26,7 +26,7 @@ class ListClass extends PureComponent {
     const { showInput } = this.state;
     return (
       <div className="w-[90%] flex flex-col bg-gray-100 rounded-sm p-2 gap-2 justify-center items-center">
-        <DragDropContext onDragEnd={handleOnDragEnd}>
+        <DragDropContext onDragEnd={(res) => this.handleOnDragEnd(res, dataList, changeListOrder)}>
           <Droppable droppableId="list">
             {(provided) => (
               <div

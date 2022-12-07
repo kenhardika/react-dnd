@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+
 import InputSectionClass from '../components_class/inputSectionClass';
 import FormTitleClass from '../components_class/InputSectionComponents/FormTitleClass';
 import ImageClass from '../components_class/InputSectionComponents/ImageClass';
@@ -34,6 +36,18 @@ class ClassIndex extends Component {
     });
   };
 
+  handleChangeIndex = (data) => { 
+    this.setState((cur) => {
+      const newData = [...data];
+      return {
+        ...cur,
+        sections: [
+          ...newData
+        ]
+      }
+    });
+  }
+
   handleUpload = (e, index) => {
      e.preventDefault();
      let files;
@@ -54,13 +68,13 @@ class ClassIndex extends Component {
      if (reader.error || files[0] === undefined) return
      reader.readAsDataURL(files[0]);
    };
-  // handleOnDragEnd = (result) => {
-  //   if (!result.destination) return;
-  //   const items = Array.from(state);
-  //   const [reorderedItem] = items.splice(result.source.index, 1);
-  //   items.splice(result.destination.index, 0, reorderedItem);
-  // this.setState({ type: "DRAG_AND_DROP", payload: items });
-  // };
+  handleOnDragEnd = (result, state, updateSection ) => {
+    if (!result.destination) return;
+    const items = Array.from(state);
+    const [reorderedItem] = items.splice(result.source.index, 1);
+    items.splice(result.destination.index, 0, reorderedItem);
+    updateSection(items);
+  };
 
   handleUpdateState = ({ data, getData }) => {
     this.setState((cur) => {
@@ -126,63 +140,121 @@ class ClassIndex extends Component {
 
             <div // draggable
             >
-              {sections &&
-                sections.map((section, index) => (
-                  <InputSectionClass
-                    key={index}
-                    deleteSection={() =>
-                      this.handleUpdateSection({
-                        getData(section) {
-                          const newData = [...section];
-                          newData.splice(index, 1);
-                          return newData;
-                        },
-                      })
-                    }
-                  >
-                    <FormTitleClass
-                      handleChange={(e) =>
-                        this.handleUpdateSection({
-                          getData(section, index = index) {
-                            const newData = [...section];
-                            newData[index][e.target.name] = e.target.value;
-                            return newData;
-                          },
-                        })
-                      }
-                      title={section.title}
-                    />
+              <DragDropContext
+                onDragEnd={(res) =>
+                  this.handleOnDragEnd(
+                    res,
+                    sections,
+                    this.handleChangeIndex()
+                  )
+                }
+              >
+                <Droppable droppableId="list">
+                  {(provided) => (
+                    <div {...provided.droppableProps} ref={provided.innerRef}>
+                      {sections &&
+                        sections.map((section, index) => (
+                          <Draggable
+                            key={`key-list-${index}`}
+                            draggableId={`list-id-${index}`}
+                            index={index}
+                          >
+                            {(provided) => (
+                              <div
+                                className="py-1 border border-solid"
+                                {...provided.draggableProps}
+                                {...provided.dragHandleProps}
+                                ref={provided.innerRef}
+                              >
+                                <InputSectionClass
+                                  key={index}
+                                  deleteSection={() =>
+                                    this.handleUpdateSection({
+                                      getData(section) {
+                                        const newData = [...section];
+                                        newData.splice(index, 1);
+                                        return newData;
+                                      },
+                                    })
+                                  }
+                                >
+                                  <FormTitleClass
+                                    handleChange={(e) =>
+                                      this.handleUpdateSection({
+                                        getData(section) {
+                                          const newData = [...section];
+                                          newData[index][e.target.name] =
+                                            e.target.value;
+                                          return newData;
+                                        },
+                                      })
+                                    }
+                                    title={section.title}
+                                  />
 
-                    <ImageClass
-                      image={section.image}
-                      handleUpdateState={() =>
-                        this.handleUpdateState({
-                          getData(state) {
-                            const newData = { ...state };
-                            newData.image.value = "";
-                            newData.image.index = index;
-                            newData.showModal = !state.showModal;
-                            return newData;
-                          },
-                        })
-                      }
-                      deleteImage={() => console.log("delete" + " " + index)}
-                    />
+                                  <ImageClass
+                                    image={section.image}
+                                    handleUpdateState={() =>
+                                      this.handleUpdateState({
+                                        getData(state) {
+                                          const newData = { ...state };
+                                          newData.image.value = "";
+                                          newData.image.index = index;
+                                          newData.showModal = !state.showModal;
+                                          return newData;
+                                        },
+                                      })
+                                    }
+                                    deleteImage={() =>
+                                      console.log("delete" + " " + index)
+                                    }
+                                  />
 
-                    <ListClass
-                      dataList={section.list}
-                      changeListOrder={(item)=> console.log(item)}
-                      // deleteList={(indexList) => this.handleUpdateSection({
-                      //   getData(section, indexSection = index) {
-                      //     const newData = [...section];
-                          // newData[indexSection].list[indexList] = 
-                      //  } }) }
-                      // submitAddList = 
-                      // changeListOrder = 
-                    />
-
-                  </InputSectionClass>
-                ))}
+                                  <ListClass
+                                    dataList={section.list}
+                                    changeListOrder={(data) =>
+                                      this.handleUpdateSection({
+                                        getData(section) {
+                                          const newData = [...section];
+                                          newData[index].list = data;
+                                          return newData;
+                                        },
+                                      })
+                                    }
+                                    deleteList={(indexList) =>
+                                      this.handleUpdateSection({
+                                        getData(section) {
+                                          const newData = [...section];
+                                          const newList = [...section[index].list];
+                                          newList.splice(indexList, 1);
+                                          newData[index].list = newList;
+                                          return newData;
+                                        },
+                                      })
+                                    }
+                                    submitAddList={(data) =>
+                                      this.handleUpdateSection({
+                                        getData(section) {
+                                          const newData = [...section];
+                                          const newList = [...section[index].list];
+                                          newList.push(data);
+                                          newData[index].list = newList;
+                                          return newData;
+                                        },
+                                      })
+                                    }
+                                  // changeListOrder =
+                                  />
+                                </InputSectionClass>
+                              </div>
+                            )}
+                          </Draggable>
+                        ))}
+                      {provided.placeholder}
+                    </div>
+                  )}
+                </Droppable>
+              </DragDropContext>
             </div>
           </div>
         </div>
