@@ -36,46 +36,6 @@ class ClassIndex extends Component {
     });
   };
 
-  handleChangeIndex = (data) => { 
-    this.setState((cur) => {
-      const newData = [...data];
-      return {
-        ...cur,
-        sections: [
-          ...newData
-        ]
-      }
-    });
-  }
-
-  handleUpload = (e, index) => {
-     e.preventDefault();
-     let files;
-     if (e.dataTransfer) {
-       files = e.dataTransfer.files;
-     } else if (e.target) {
-       files = e.target.files;
-     }
-     const reader = new FileReader();
-     reader.onload = () => {
-       if (!reader.result) return;
-       this.setState({ image:{
-         value: reader.result,
-         index,
-         }
-       });
-     };
-     if (reader.error || files[0] === undefined) return
-     reader.readAsDataURL(files[0]);
-   };
-  handleOnDragEnd = (result, state ) => {
-    if (!result.destination) return;
-    const items = Array.from(state);
-    const [reorderedItem] = items.splice(result.source.index, 1);
-    items.splice(result.destination.index, 0, reorderedItem);
-    updateSection(items);// ganti aja pake this set state  
-  };
-
   handleUpdateState = ({ data, getData }) => {
     this.setState((cur) => {
       const newData = data || getData(cur);
@@ -83,6 +43,45 @@ class ClassIndex extends Component {
         ...newData,
       };
     });
+  };
+
+  handleChangeIndex = (data) => {
+    this.setState((cur) => {
+      const newData = [...data];
+      return {
+        ...cur,
+        sections: [...newData],
+      };
+    });
+  };
+
+  handleUpload = (e, index) => {
+    e.preventDefault();
+    let files;
+    if (e.dataTransfer) {
+      files = e.dataTransfer.files;
+    } else if (e.target) {
+      files = e.target.files;
+    }
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (!reader.result) return;
+      this.setState({
+        image: {
+          value: reader.result,
+          index,
+        },
+      });
+    };
+    if (reader.error || files[0] === undefined) return;
+    reader.readAsDataURL(files[0]);
+  };
+  handleOnDragEnd = (result, state) => {
+    if (!result.destination) return;
+    const items = Array.from(state);
+    const [reorderedItem] = items.splice(result.source.index, 1);
+    items.splice(result.destination.index, 0, reorderedItem);
+    this.setState({ sections: items });
   };
 
   changeModalStatus = (value) => {
@@ -141,12 +140,7 @@ class ClassIndex extends Component {
             <div // draggable
             >
               <DragDropContext
-                onDragEnd={(res) =>
-                  this.handleOnDragEnd(
-                    res,
-                    sections
-                  )
-                }
+                onDragEnd={(res) => this.handleOnDragEnd(res, sections)}
               >
                 <Droppable droppableId="list">
                   {(provided) => (
@@ -224,7 +218,9 @@ class ClassIndex extends Component {
                                       this.handleUpdateSection({
                                         getData(section) {
                                           const newData = [...section];
-                                          const newList = [...section[index].list];
+                                          const newList = [
+                                            ...section[index].list,
+                                          ];
                                           newList.splice(indexList, 1);
                                           newData[index].list = newList;
                                           return newData;
@@ -235,7 +231,9 @@ class ClassIndex extends Component {
                                       this.handleUpdateSection({
                                         getData(section) {
                                           const newData = [...section];
-                                          const newList = [...section[index].list];
+                                          const newList = [
+                                            ...section[index].list,
+                                          ];
                                           newList.push(data);
                                           newData[index].list = newList;
                                           return newData;
