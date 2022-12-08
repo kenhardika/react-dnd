@@ -68,12 +68,12 @@ class ClassIndex extends Component {
      if (reader.error || files[0] === undefined) return
      reader.readAsDataURL(files[0]);
    };
-  handleOnDragEnd = (result, state, updateSection ) => {
+  handleOnDragEnd = (result, state ) => {
     if (!result.destination) return;
     const items = Array.from(state);
     const [reorderedItem] = items.splice(result.source.index, 1);
     items.splice(result.destination.index, 0, reorderedItem);
-    updateSection(items);
+    updateSection(items);// ganti aja pake this set state  
   };
 
   handleUpdateState = ({ data, getData }) => {
@@ -144,8 +144,7 @@ class ClassIndex extends Component {
                 onDragEnd={(res) =>
                   this.handleOnDragEnd(
                     res,
-                    sections,
-                    this.handleChangeIndex()
+                    sections
                   )
                 }
               >
@@ -243,7 +242,6 @@ class ClassIndex extends Component {
                                         },
                                       })
                                     }
-                                  // changeListOrder =
                                   />
                                 </InputSectionClass>
                               </div>
