@@ -27,15 +27,6 @@ class ClassIndex extends Component {
     };
   }
 
-  handleUpdateSection = ({ data, getData }) => {
-    this.setState((cur) => {
-      const newData = data || getData(cur.sections);
-      return {
-        sections: [...newData],
-      };
-    });
-  };
-
   handleUpdateState = ({ data, getData }) => {
     this.setState((cur) => {
       const newData = data || getData(cur);
@@ -44,17 +35,7 @@ class ClassIndex extends Component {
       };
     });
   };
-
-  handleChangeIndex = (data) => {
-    this.setState((cur) => {
-      const newData = [...data];
-      return {
-        ...cur,
-        sections: [...newData],
-      };
-    });
-  };
-
+  
   handleUpload = (e, index) => {
     e.preventDefault();
     let files;
@@ -84,15 +65,8 @@ class ClassIndex extends Component {
     this.setState({ sections: items });
   };
 
-  changeModalStatus = (value) => {
-    this.setState({ showModal: value });
-  };
-  changeImageIndex = (index) => {
-    this.setState((cur) => ({ ...cur, image: { ...cur.image, index } }));
-  };
 
   render() {
-    console.log(this.state);
     const emptyData = {
       title: "",
       image: "",
@@ -102,20 +76,27 @@ class ClassIndex extends Component {
     return (
       <>
         {showModal && (
-          <ModalLayerClass onHide={() => this.changeModalStatus(!showModal)}>
+          <ModalLayerClass
+            onHide={() =>
+              this.handleUpdateState({
+                data: { ...this.state, showModal: !showModal },
+              })
+            }
+          >
             <ModalCropperClass
-              onCrop={(onCropData) =>
-                this.handleUpdateSection({
-                  getData(section, index = image.index) {
-                    const newData = [...section];
-                    newData[index].image = onCropData;
-                    return newData;
-                  },
-                })
-              }
+              onCrop={(onCropData) => this.handleUpdateState({
+                getData(state, index = image.index) {
+                  const newData = { ...state };
+                  newData.sections[index].image = onCropData;
+                  return newData;
+              }}) }
               image={image.value}
               handleUpload={(e) => this.handleUpload(e, image.index)}
-              onHide={() => this.changeModalStatus(!showModal)}
+              onHide={() =>
+                this.handleUpdateState({
+                  data: { ...this.state, showModal: !showModal },
+                })
+              }
             />
           </ModalLayerClass>
         )}
@@ -128,16 +109,12 @@ class ClassIndex extends Component {
             <button
               className="w-[100px] border-solid border-2 
           border-black rounded-lg p-2 active:translate-y-0.5"
-              onClick={() =>
-                this.handleUpdateSection({
-                  data: [...sections, emptyData],
-                })
-              }
+              onClick={()=> this.handleUpdateState({ data: { sections:[ ...sections, emptyData ] } })}
             >
               Add Section
             </button>
 
-            <div // draggable
+            <div 
             >
               <DragDropContext
                 onDragEnd={(res) => this.handleOnDragEnd(res, sections)}
@@ -162,26 +139,23 @@ class ClassIndex extends Component {
                                 <InputSectionClass
                                   key={index}
                                   deleteSection={() =>
-                                    this.handleUpdateSection({
-                                      getData(section) {
-                                        const newData = [...section];
-                                        newData.splice(index, 1);
+                                    this.handleUpdateState({
+                                      getData(state) {
+                                        const newData = { ...state };
+                                        newData.sections.splice(index, 1);
                                         return newData;
-                                      },
-                                    })
+                                    }})
                                   }
                                 >
                                   <FormTitleClass
-                                    handleChange={(e) =>
-                                      this.handleUpdateSection({
-                                        getData(section) {
-                                          const newData = [...section];
-                                          newData[index][e.target.name] =
-                                            e.target.value;
-                                          return newData;
-                                        },
-                                      })
-                                    }
+                                    handleChange={(e) => this.handleUpdateState({
+                                      getData(state) {
+                                        const newData = { ...state };
+                                        newData.sections[index][e.target.name] = e.target.value;
+                                        return newData
+                                      }
+                                    })}  
+
                                     title={section.title}
                                   />
 
@@ -199,47 +173,41 @@ class ClassIndex extends Component {
                                       })
                                     }
                                     deleteImage={() =>
-                                      console.log("delete" + " " + index)
+                                      this.handleUpdateState({
+                                        getData(state) {
+                                          const newData = { ...state };
+                                          newData.sections[index].image = ""
+                                          return newData;
+                                        },
+                                      })
                                     }
                                   />
 
                                   <ListClass
                                     dataList={section.list}
                                     changeListOrder={(data) =>
-                                      this.handleUpdateSection({
-                                        getData(section) {
-                                          const newData = [...section];
-                                          newData[index].list = data;
+                                      this.handleUpdateState({
+                                        getData(state) {
+                                          const newData = { ...state };
+                                          newData.sections[index].list = data;
                                           return newData;
                                         },
                                       })
                                     }
-                                    deleteList={(indexList) =>
-                                      this.handleUpdateSection({
-                                        getData(section) {
-                                          const newData = [...section];
-                                          const newList = [
-                                            ...section[index].list,
-                                          ];
-                                          newList.splice(indexList, 1);
-                                          newData[index].list = newList;
-                                          return newData;
-                                        },
-                                      })
-                                    }
-                                    submitAddList={(data) =>
-                                      this.handleUpdateSection({
-                                        getData(section) {
-                                          const newData = [...section];
-                                          const newList = [
-                                            ...section[index].list,
-                                          ];
-                                          newList.push(data);
-                                          newData[index].list = newList;
-                                          return newData;
-                                        },
-                                      })
-                                    }
+                                    
+                                    deleteList={(indexList) => this.handleUpdateState({
+                                      getData(state) {
+                                        const newData = { ...state };
+                                        newData.sections[index].list.splice(indexList, 1);
+                                        return newData;
+                                    }}) }
+
+                                    submitAddList={(data) => this.handleUpdateState({
+                                      getData(state) {
+                                        const newData = { ...state };
+                                        newData.sections[index].list.push(data);
+                                        return newData;
+                                    }})}
                                   />
                                 </InputSectionClass>
                               </div>
