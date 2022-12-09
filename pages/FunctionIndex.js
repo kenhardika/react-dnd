@@ -10,10 +10,9 @@ import { formReducer, INITIAL_STATE } from "../utils/formReducer";
 
 export default function FunctionIndex() {
 
-  const defaultState = { value:"", index:"" }
-
+  const defaultImageState = { value:"", index:"" }
   const [state, dispatch] = useReducer(formReducer, INITIAL_STATE);
-  const [image, setImage] = useState(defaultState);
+  const [image, setImage] = useState(defaultImageState);
   const [showModal, setShowModal] = useState(false);
 
    const handleUpload = (e, index) => {
@@ -99,7 +98,7 @@ export default function FunctionIndex() {
         <ModalLayer
           onHide={() => {
             setShowModal(false);
-            setImage(defaultState);
+            setImage(defaultImageState);
           }}
         >
           <ModalCropper
@@ -113,7 +112,7 @@ export default function FunctionIndex() {
             }}
             onHide={() => {
               setShowModal(false);
-              setImage(defaultState);
+              setImage(defaultImageState);
             }}
             image={image.value}
             handleUpload={(e) => 
