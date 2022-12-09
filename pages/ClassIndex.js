@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 
 import InputSectionClass from '../components_class/inputSectionClass';
@@ -8,7 +8,7 @@ import ListClass from '../components_class/InputSectionComponents/ListClass';
 import ModalCropperClass from '../components_class/ModalCropperClass';
 import ModalLayerClass from '../components_class/ModalLayerClass';
 
-class ClassIndex extends PureComponent {
+class ClassIndex extends Component {
   constructor(props) {
     super(props);
     this.state = {
