@@ -1,10 +1,10 @@
 import { useReducer, useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import CropperLayer from "../components/CropperLayer";
 import InputSection from "../components/InputSection";
 import FormTitleSection from "../components/InputSectionComponents/FormTitleSection";
 import ImageSection from "../components/InputSectionComponents/ImageSection";
 import ListSection from "../components/InputSectionComponents/ListSection";
-import ModalCropper from "../components/ModalCropper";
 import ModalLayer from "../components/ModalLayer";
 import { formReducer, INITIAL_STATE } from "../utils/formReducer";
 
@@ -18,9 +18,7 @@ export default function FunctionIndex() {
    const handleUpload = (e, index) => {
      e.preventDefault();
      let files;
-     if (e.dataTransfer) {
-       files = e.dataTransfer.files;
-     } else if (e.target) {
+     if (e.target) {
        files = e.target.files;
      }
      const reader = new FileReader();
@@ -80,16 +78,12 @@ export default function FunctionIndex() {
     });
   };
   
-  const handleChangeListOrder = (indexSection, payload) => {
-    dispatch({ type: "DD_LIST", payload, indexSection });
+  const handleUpdateListOrder = (indexSection, payload) => {
+    dispatch({ type: "CHANGE_LIST_ORDER", payload, indexSection });
   };
 
   const handleOnDragEnd = (result) => {
-    if (!result.destination) return;
-    const items = Array.from(state);
-    const [reorderedItem] = items.splice(result.source.index, 1);
-    items.splice(result.destination.index, 0, reorderedItem);
-    dispatch({ type: "DRAG_AND_DROP", payload: items });
+    dispatch({ type: "DRAG_AND_DROP", payload: result });
   };
 
   return (
@@ -101,7 +95,7 @@ export default function FunctionIndex() {
             setImage(defaultImageState);
           }}
         >
-          <ModalCropper
+          <CropperLayer
             onCrop={(cropData) => {
               dispatch({
                 type: "UPLOAD_IMAGE",
@@ -176,8 +170,8 @@ export default function FunctionIndex() {
                                 submitAddList={(value) =>
                                   handleSubmitAddList(value, index)
                                 }
-                                changeListOrder={(payload) =>
-                                  handleChangeListOrder(index, payload)
+                                updateListOrder={(payload) =>
+                                  handleUpdateListOrder(index, payload)
                                 }
                                 deleteList={(indexList) =>
                                   handleDeleteList(index, indexList)

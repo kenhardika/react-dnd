@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 
+import CropperLayerClass from '../components_class/CropperLayerClass';
 import InputSectionClass from '../components_class/inputSectionClass';
 import FormTitleClass from '../components_class/InputSectionComponents/FormTitleClass';
 import ImageClass from '../components_class/InputSectionComponents/ImageClass';
 import ListClass from '../components_class/InputSectionComponents/ListClass';
-import ModalCropperClass from '../components_class/ModalCropperClass';
 import ModalLayerClass from '../components_class/ModalLayerClass';
 
 class ClassIndex extends Component {
@@ -39,9 +39,7 @@ class ClassIndex extends Component {
   handleUpload = (e, index) => {
     e.preventDefault();
     let files;
-    if (e.dataTransfer) {
-      files = e.dataTransfer.files;
-    } else if (e.target) {
+   if (e.target) {
       files = e.target.files;
     }
     const reader = new FileReader();
@@ -83,7 +81,7 @@ class ClassIndex extends Component {
               })
             }
           >
-            <ModalCropperClass
+            <CropperLayerClass
               onCrop={(onCropData) => this.handleUpdateState({
                 getData(state, index = image.index) {
                   const newData = { ...state };

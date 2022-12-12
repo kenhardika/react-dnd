@@ -2,14 +2,14 @@ import React, { memo, useState } from 'react';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import InputList from './InputList';
 
-function ListSection({ dataList, deleteList, submitAddList, changeListOrder }) {
+function ListSection({ dataList, deleteList, submitAddList, updateListOrder }) {
   const [showInput, setShowInput] = useState(false);
   const handleOnDragEnd = (result) => {
     if (!result.destination) return;
     const items = Array.from(dataList);
     const [reorderedItem] = items.splice(result.source.index, 1);
     items.splice(result.destination.index, 0, reorderedItem);
-    changeListOrder(items);
+    updateListOrder(items);
   };
 
   return (

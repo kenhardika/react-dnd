@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react';
 import { Cropper } from 'react-cropper';
 
 
-class ModalCropperClass extends PureComponent {
+class CropperLayerClass extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -74,4 +74,4 @@ class ModalCropperClass extends PureComponent {
   }
 }
 
-export default ModalCropperClass;
+export default CropperLayerClass;

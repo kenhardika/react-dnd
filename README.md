@@ -5,7 +5,7 @@ pada Page FunctionIndex/ClassIndex, disini tempat dimana pusat state management 
 Functions yang mengatur state utama dari project diatur pada halaman index.
 
 Untuk Function Component kita menggunakan useReducer, useReducer adalah sebuah fungsi yang disediakan oleh React yang membantu kita untuk mengelola state aplikasi kita dengan lebih mudah. 
-Fungsi ini sering digunakan bersama dengan komponen React seperti useState. 
+Fungsi ini dapat digunakan bersama dengan komponen React seperti useState. 
 
 Biasanya, kita akan menggunakan useReducer ketika state aplikasi kita mulai menjadi lebih kompleks 
 dan memerlukan lebih banyak logika untuk mengelolanya.

@@ -2,7 +2,7 @@ import "cropperjs/dist/cropper.css";
 import { memo, useState } from "react";
 import { Cropper } from "react-cropper";
 
-function ModalCropper({
+function CropperLayer({
   onCrop,
   aspectRatio = 1,
   image = "",
@@ -67,4 +67,4 @@ function areNonFuncPropsEquals(prevProps, nextProps) {
   return prevProps.image === nextProps.image;
 }
 
-export default memo(ModalCropper, areNonFuncPropsEquals);
+export default memo(CropperLayer, areNonFuncPropsEquals);
