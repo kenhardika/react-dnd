@@ -1,9 +1,7 @@
-import React, { memo, useState } from 'react';
+import React, { memo } from 'react';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
-import InputList from './InputList';
 
-function ListSection({ dataList, deleteList, submitAddList, updateListOrder }) {
-  const [showInput, setShowInput] = useState(false);
+function ListSection({ dataList, children, submitAddList, updateListOrder }) {
   const handleOnDragEnd = (result) => {
     if (!result.destination) return;
     const items = Array.from(dataList);
@@ -12,6 +10,7 @@ function ListSection({ dataList, deleteList, submitAddList, updateListOrder }) {
     updateListOrder(items);
   };
 
+  console.log(dataList);
   return (
     <div className="w-[90%] flex flex-col bg-gray-100 rounded-sm p-2 gap-2 justify-center items-center">
       <DragDropContext onDragEnd={handleOnDragEnd}>
@@ -36,11 +35,13 @@ function ListSection({ dataList, deleteList, submitAddList, updateListOrder }) {
                         {...provided.dragHandleProps}
                         ref={provided.innerRef}
                       >
-                        <InputList
+                        {/* <InputList
                           key={index}
                           lists={list}
                           deleteList={() => deleteList(index)}
-                        />
+                        /> */}
+                        {children}
+
                       </div>
                     )}
                   </Draggable>
@@ -51,13 +52,11 @@ function ListSection({ dataList, deleteList, submitAddList, updateListOrder }) {
           )}
         </Droppable>
       </DragDropContext>
-      {showInput && (
         <form
           className="flex flex-col justify-center items-center gap-2"
           onSubmit={(e) => {
             e.preventDefault();
             submitAddList(e.target[0].value);
-            setShowInput(false);
           }}
         >
           <input type="text" name="list" />
@@ -68,7 +67,6 @@ function ListSection({ dataList, deleteList, submitAddList, updateListOrder }) {
             ok
           </button>
         </form>
-      )}
       <button
         type="button"
         className=" w-[50px] bg-gray-500 text-white rounded-lg text-sm"

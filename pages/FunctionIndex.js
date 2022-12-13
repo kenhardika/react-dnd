@@ -2,7 +2,7 @@ import { useReducer, useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import CropperLayer from "../components/CropperLayer";
 import InputSection from "../components/InputSection";
-import FormTitleSection from "../components/InputSectionComponents/FormTitleSection";
+import FormInputSection from "../components/InputSectionComponents/FormInputSection";
 import ImageSection from "../components/InputSectionComponents/ImageSection";
 import ListSection from "../components/InputSectionComponents/ListSection";
 import ModalLayer from "../components/ModalLayer";
@@ -42,7 +42,7 @@ export default function FunctionIndex() {
     });
   }
   
-  const handleChange = (e, indexSection) => {
+  const handleChange = (e, indexSection) => { // todo create handle list, only change list
     dispatch({
       type: "CHANGE_TITLE",
       indexSection,
@@ -152,8 +152,9 @@ export default function FunctionIndex() {
                             <InputSection
                               deleteSection={() => handleDeleteSection(index)}
                             >
-                              <FormTitleSection
-                                title={item.title}
+                              <FormInputSection
+                                value={item.title}
+                                name="title"
                                 handleChange={(e) => handleChange(e, index)}
                               />
                               <ImageSection
@@ -176,7 +177,12 @@ export default function FunctionIndex() {
                                 deleteList={(indexList) =>
                                   handleDeleteList(index, indexList)
                                 }
-                              />
+                              >
+                                <FormInputSection
+                                  name="list"
+                                  handleChange={(e) => handleChange(e, index)}
+                                />
+                              </ListSection>
                             </InputSection>
                           </div>
                         )}
