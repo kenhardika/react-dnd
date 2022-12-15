@@ -1,7 +1,8 @@
 import React, { memo } from 'react';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
+import FormInputSection from './FormInputSection';
 
-function ListSection({ dataList, children, submitAddList, updateListOrder }) {
+function ListSection({ dataList, addList, updateListOrder, handleChange }) {
   const handleOnDragEnd = (result) => {
     if (!result.destination) return;
     const items = Array.from(dataList);
@@ -35,13 +36,11 @@ function ListSection({ dataList, children, submitAddList, updateListOrder }) {
                         {...provided.dragHandleProps}
                         ref={provided.innerRef}
                       >
-                        {/* <InputList
-                          key={index}
-                          lists={list}
-                          deleteList={() => deleteList(index)}
-                        /> */}
-                        {children}
-
+                        <FormInputSection
+                          value={list}
+                          name="list"
+                          handleChange={(e) => handleChange(e, index)}
+                        />
                       </div>
                     )}
                   </Draggable>
@@ -52,30 +51,20 @@ function ListSection({ dataList, children, submitAddList, updateListOrder }) {
           )}
         </Droppable>
       </DragDropContext>
-        <form
-          className="flex flex-col justify-center items-center gap-2"
-          onSubmit={(e) => {
-            e.preventDefault();
-            submitAddList(e.target[0].value);
-          }}
-        >
-          <input type="text" name="list" />
-          <button
-            type="submit"
-            className="bg-blue-500 w-[80px] rounded-lg text-white "
-          >
-            ok
-          </button>
-        </form>
-      <button
-        type="button"
-        className=" w-[50px] bg-gray-500 text-white rounded-lg text-sm"
-        onClick={() => {
-          setShowInput(!showInput);
+      <form
+        className="flex flex-col justify-center items-center gap-2"
+        onSubmit={(e) => {
+          e.preventDefault();
+          addList();
         }}
       >
-        + list
-      </button>
+        <button
+          type="submit"
+          className="bg-blue-500 w-[80px] rounded-lg text-white "
+        >
+          Add List
+        </button>
+      </form>
     </div>
   );
 }

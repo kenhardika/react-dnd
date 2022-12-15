@@ -51,6 +51,15 @@ export default function FunctionIndex() {
     });
   };
 
+  const handleChangeList = (e, indexList, indexSection) => {
+    dispatch({
+      type: "CHANGE_LIST",
+      indexSection,
+      indexList, 
+      value: e.target.value
+    })
+  }
+
   const handleAddSection = () => {
     dispatch({ type: "ADD_SECTION" });
   };
@@ -62,10 +71,9 @@ export default function FunctionIndex() {
     });
   };
 
-  const handleSubmitAddList = (value, indexSection) => {
+  const handleAddList = (indexSection) => {
     dispatch({
       type: "ADD_LIST",
-      value,
       indexSection,
     });
   };
@@ -168,8 +176,8 @@ export default function FunctionIndex() {
 
                               <ListSection
                                 dataList={item.list}
-                                submitAddList={(value) =>
-                                  handleSubmitAddList(value, index)
+                                addList={() =>
+                                  handleAddList(index)
                                 }
                                 updateListOrder={(payload) =>
                                   handleUpdateListOrder(index, payload)
@@ -177,12 +185,9 @@ export default function FunctionIndex() {
                                 deleteList={(indexList) =>
                                   handleDeleteList(index, indexList)
                                 }
-                              >
-                                <FormInputSection
-                                  name="list"
-                                  handleChange={(e) => handleChange(e, index)}
-                                />
-                              </ListSection>
+                                handleChange = { (e, indexList)=> handleChangeList(e, indexList, index ) }
+                              />
+                              
                             </InputSection>
                           </div>
                         )}

@@ -24,7 +24,7 @@ export const formReducer = (state, action) => {
 
     case "ADD_LIST":
       const addNewList = [...newSection.list];
-      addNewList.push(value);
+      addNewList.push("");
       newSection.list = addNewList;
       newData[indexSection] = newSection;
       return newData;
@@ -49,7 +49,14 @@ export const formReducer = (state, action) => {
       const [reorderedItem] = items.splice(payload.source.index, 1);
       items.splice(payload.destination.index, 0, reorderedItem);
       return items;
-
+    
+    case "CHANGE_LIST":
+      const changedList = [...newSection.list];
+      changedList[indexList] = value;
+      newSection.list = changedList;
+      newData[indexSection] = newSection;
+      return newData
+    
     case "CHANGE_LIST_ORDER":
       newSection.list = payload;
       newData[indexSection] = newSection;
