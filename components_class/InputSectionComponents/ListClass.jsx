@@ -17,12 +17,17 @@ class ListClass extends PureComponent {
     const {
       dataList,
       handleChange,
-      submitAddList,
+      handleAddList,
       changeListOrder,
+      handleDelete,
     } = this.props;
     return (
       <div className="w-[90%] flex flex-col bg-gray-100 rounded-sm p-2 gap-2 justify-center items-center">
-        <DragDropContext onDragEnd={(res) => this.handleOnDragEnd(res, dataList, changeListOrder)}>
+        <DragDropContext
+          onDragEnd={(res) =>
+            this.handleOnDragEnd(res, dataList, changeListOrder)
+          }
+        >
           <Droppable droppableId="list">
             {(provided) => (
               <div
@@ -49,6 +54,12 @@ class ListClass extends PureComponent {
                             name="list"
                             handleChange={(e) => handleChange(e, index)}
                           />
+                          <button
+                            className="rounded-full bg-red-500 text-white w-[25px]"
+                            onClick={() => handleDelete(index)}
+                          >
+                            x
+                          </button>
                         </div>
                       )}
                     </Draggable>
@@ -59,20 +70,12 @@ class ListClass extends PureComponent {
             )}
           </Droppable>
         </DragDropContext>
-          <form
-            className="flex flex-col justify-center items-center gap-2"
-            onSubmit={(e) => {
-              e.preventDefault();
-              submitAddList(e.target[0].value);
-            }}
-          >
-            <button
-              type="submit"
-              className="bg-blue-500 w-[80px] rounded-lg text-white "
-            >
-              Add List
-            </button>
-          </form>
+        <button
+          onClick={handleAddList}
+          className="bg-blue-500 w-[80px] rounded-lg text-white "
+        >
+          Add List
+        </button>
       </div>
     );
   }

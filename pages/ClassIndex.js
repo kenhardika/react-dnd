@@ -210,7 +210,7 @@ class ClassIndex extends Component {
                                         },
                                       })
                                     }
-                                    deleteList={(indexList) =>
+                                    handleDelete={(indexList) =>
                                       this.handleUpdateState({
                                         getData(state) {
                                           const newData = { ...state };
@@ -222,13 +222,11 @@ class ClassIndex extends Component {
                                         },
                                       })
                                     }
-                                    submitAddList={(data) =>
+                                    handleAddList={() =>
                                       this.handleUpdateState({
                                         getData(state) {
                                           const newData = { ...state };
-                                          newData.sections[index].list.push(
-                                            data
-                                          );
+                                          newData.sections[index].list.push("");
                                           return newData;
                                         },
                                       })

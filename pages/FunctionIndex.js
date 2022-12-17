@@ -176,18 +176,20 @@ export default function FunctionIndex() {
 
                               <ListSection
                                 dataList={item.list}
-                                addList={() =>
-                                  handleAddList(index)
-                                }
+                                handleAddList={() => handleAddList(index)}
                                 updateListOrder={(payload) =>
                                   handleUpdateListOrder(index, payload)
                                 }
                                 deleteList={(indexList) =>
                                   handleDeleteList(index, indexList)
                                 }
-                                handleChange = { (e, indexList)=> handleChangeList(e, indexList, index ) }
+                                handleChange={(e, indexList) =>
+                                  handleChangeList(e, indexList, index)
+                                }
+                                handleDelete={(indexList) =>
+                                  handleDeleteList(index, indexList)
+                                }
                               />
-                              
                             </InputSection>
                           </div>
                         )}
