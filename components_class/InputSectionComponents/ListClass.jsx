@@ -1,14 +1,9 @@
 import React, { PureComponent } from 'react';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
-import InputListClass from './InputListClass';
+import FormInputClass from './FormInputClass';
 
 class ListClass extends PureComponent {
-  constructor(props) {
-    super(props);
-    this.state = {
-      showInput: false,
-    };
-  }
+  
   handleOnDragEnd = (result, dataList, changeListOrder) => {
     if (!result.destination) return;
     const items = Array.from(dataList);
@@ -17,13 +12,14 @@ class ListClass extends PureComponent {
     changeListOrder(items);
   };
 
-  changeShowInput = (value) => { 
-    this.setState({showInput: value})
-  }
 
   render() {
-    const { dataList, deleteList, submitAddList, changeListOrder } = this.props;
-    const { showInput } = this.state;
+    const {
+      dataList,
+      handleChange,
+      submitAddList,
+      changeListOrder,
+    } = this.props;
     return (
       <div className="w-[90%] flex flex-col bg-gray-100 rounded-sm p-2 gap-2 justify-center items-center">
         <DragDropContext onDragEnd={(res) => this.handleOnDragEnd(res, dataList, changeListOrder)}>
@@ -48,10 +44,10 @@ class ListClass extends PureComponent {
                           {...provided.dragHandleProps}
                           ref={provided.innerRef}
                         >
-                          <InputListClass
-                            key={index}
-                            lists={list}
-                            deleteList={() => deleteList(index)}
+                          <FormInputClass
+                            value={list}
+                            name="list"
+                            handleChange={(e) => handleChange(e, index)}
                           />
                         </div>
                       )}
@@ -63,33 +59,20 @@ class ListClass extends PureComponent {
             )}
           </Droppable>
         </DragDropContext>
-        {showInput && (
           <form
             className="flex flex-col justify-center items-center gap-2"
             onSubmit={(e) => {
               e.preventDefault();
               submitAddList(e.target[0].value);
-              this.changeShowInput(!showInput);
             }}
           >
-            <input type="text" name="list" />
             <button
               type="submit"
               className="bg-blue-500 w-[80px] rounded-lg text-white "
             >
-              ok
+              Add List
             </button>
           </form>
-        )}
-        <button
-          type="button"
-          className=" w-[50px] bg-gray-500 text-white rounded-lg text-sm"
-          onClick={() => {
-            this.changeShowInput(!showInput);
-          }}
-        >
-          + list
-        </button>
       </div>
     );
   }

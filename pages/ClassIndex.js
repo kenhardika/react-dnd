@@ -3,7 +3,7 @@ import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 
 import CropperLayerClass from '../components_class/CropperLayerClass';
 import InputSectionClass from '../components_class/inputSectionClass';
-import FormTitleClass from '../components_class/InputSectionComponents/FormTitleClass';
+import FormInputClass from '../components_class/InputSectionComponents/FormInputClass';
 import ImageClass from '../components_class/InputSectionComponents/ImageClass';
 import ListClass from '../components_class/InputSectionComponents/ListClass';
 import ModalLayerClass from '../components_class/ModalLayerClass';
@@ -35,11 +35,11 @@ class ClassIndex extends Component {
       };
     });
   };
-  
+
   handleUpload = (e, index) => {
     e.preventDefault();
     let files;
-   if (e.target) {
+    if (e.target) {
       files = e.target.files;
     }
     const reader = new FileReader();
@@ -55,6 +55,7 @@ class ClassIndex extends Component {
     if (reader.error || files[0] === undefined) return;
     reader.readAsDataURL(files[0]);
   };
+
   handleOnDragEnd = (result, state) => {
     if (!result.destination) return;
     const items = Array.from(state);
@@ -62,7 +63,6 @@ class ClassIndex extends Component {
     items.splice(result.destination.index, 0, reorderedItem);
     this.setState({ sections: items });
   };
-
 
   render() {
     const emptyData = {
@@ -82,12 +82,15 @@ class ClassIndex extends Component {
             }
           >
             <CropperLayerClass
-              onCrop={(onCropData) => this.handleUpdateState({
-                getData(state, index = image.index) {
-                  const newData = { ...state };
-                  newData.sections[index].image = onCropData;
-                  return newData;
-              }}) }
+              onCrop={(onCropData) =>
+                this.handleUpdateState({
+                  getData(state, index = image.index) {
+                    const newData = { ...state };
+                    newData.sections[index].image = onCropData;
+                    return newData;
+                  },
+                })
+              }
               image={image.value}
               handleUpload={(e) => this.handleUpload(e, image.index)}
               onHide={() =>
@@ -107,13 +110,16 @@ class ClassIndex extends Component {
             <button
               className="w-[100px] border-solid border-2 
           border-black rounded-lg p-2 active:translate-y-0.5"
-              onClick={()=> this.handleUpdateState({ data: { sections:[ ...sections, emptyData ] } })}
+              onClick={() =>
+                this.handleUpdateState({
+                  data: { sections: [...sections, emptyData] },
+                })
+              }
             >
               Add Section
             </button>
 
-            <div 
-            >
+            <div>
               <DragDropContext
                 onDragEnd={(res) => this.handleOnDragEnd(res, sections)}
               >
@@ -142,19 +148,24 @@ class ClassIndex extends Component {
                                         const newData = { ...state };
                                         newData.sections.splice(index, 1);
                                         return newData;
-                                    }})
+                                      },
+                                    })
                                   }
                                 >
-                                  <FormTitleClass
-                                    handleChange={(e) => this.handleUpdateState({
-                                      getData(state) {
-                                        const newData = { ...state };
-                                        newData.sections[index][e.target.name] = e.target.value;
-                                        return newData
-                                      }
-                                    })}  
-
-                                    title={section.title}
+                                  <FormInputClass
+                                    handleChange={(e) =>
+                                      this.handleUpdateState({
+                                        getData(state) {
+                                          const newData = { ...state };
+                                          newData.sections[index][
+                                            e.target.name
+                                          ] = e.target.value;
+                                          return newData;
+                                        },
+                                      })
+                                    }
+                                    value={section.title}
+                                    name="title"
                                   />
 
                                   <ImageClass
@@ -174,7 +185,7 @@ class ClassIndex extends Component {
                                       this.handleUpdateState({
                                         getData(state) {
                                           const newData = { ...state };
-                                          newData.sections[index].image = ""
+                                          newData.sections[index].image = "";
                                           return newData;
                                         },
                                       })
@@ -183,6 +194,13 @@ class ClassIndex extends Component {
 
                                   <ListClass
                                     dataList={section.list}
+                                    handleChange={(e, indexList) => this.handleUpdateState({
+                                      getData(state) {
+                                        const newData = { ...state };
+                                        newData.sections[index].list[indexList] = e.target.value;
+                                        return newData;
+                                      }
+                                    })}
                                     changeListOrder={(data) =>
                                       this.handleUpdateState({
                                         getData(state) {
@@ -192,20 +210,29 @@ class ClassIndex extends Component {
                                         },
                                       })
                                     }
-                                    
-                                    deleteList={(indexList) => this.handleUpdateState({
-                                      getData(state) {
-                                        const newData = { ...state };
-                                        newData.sections[index].list.splice(indexList, 1);
-                                        return newData;
-                                    }}) }
-
-                                    submitAddList={(data) => this.handleUpdateState({
-                                      getData(state) {
-                                        const newData = { ...state };
-                                        newData.sections[index].list.push(data);
-                                        return newData;
-                                    }})}
+                                    deleteList={(indexList) =>
+                                      this.handleUpdateState({
+                                        getData(state) {
+                                          const newData = { ...state };
+                                          newData.sections[index].list.splice(
+                                            indexList,
+                                            1
+                                          );
+                                          return newData;
+                                        },
+                                      })
+                                    }
+                                    submitAddList={(data) =>
+                                      this.handleUpdateState({
+                                        getData(state) {
+                                          const newData = { ...state };
+                                          newData.sections[index].list.push(
+                                            data
+                                          );
+                                          return newData;
+                                        },
+                                      })
+                                    }
                                   />
                                 </InputSectionClass>
                               </div>

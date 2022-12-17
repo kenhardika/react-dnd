@@ -1,19 +1,19 @@
 import React, { PureComponent } from 'react';
 
-class FormTitleClass extends PureComponent {
+class FormInputClass extends PureComponent {
   render() {
-    const { title, handleChange } = this.props;
+    const { handleChange, value, name }  = this.props;
     return (
       <input
         className="rounded-lg w-[80%] bg-gray-100 px-2"
-        placeholder="input title"
+        placeholder={`input ${name}`}
         type="text"
-        name="title"
-        value={title}
+        name={name}
+        value={value}
         onChange={(e) => handleChange(e)}
       />
     );
   }
 }
 
-export default FormTitleClass;
+export default FormInputClass;
