@@ -105,7 +105,7 @@ class ClassIndex extends Component {
           className=" w-full h-[900px] bg-scroll flex flex-col 
       justify-center items-center bg-cyan-100"
         >
-          <div className="p-2 flex flex-col items-center gap-4">
+          <div className="p-2 w-full overflow-y-auto flex flex-col items-center gap-4">
             <p>hello, proceed to add section </p>
             <button
               className="w-[100px] border-solid border-2 
@@ -194,13 +194,17 @@ class ClassIndex extends Component {
 
                                   <ListClass
                                     dataList={section.list}
-                                    handleChange={(e, indexList) => this.handleUpdateState({
-                                      getData(state) {
-                                        const newData = { ...state };
-                                        newData.sections[index].list[indexList] = e.target.value;
-                                        return newData;
-                                      }
-                                    })}
+                                    handleChange={(e, indexList) =>
+                                      this.handleUpdateState({
+                                        getData(state) {
+                                          const newData = { ...state };
+                                          newData.sections[index].list[
+                                            indexList
+                                          ] = e.target.value;
+                                          return newData;
+                                        },
+                                      })
+                                    }
                                     changeListOrder={(data) =>
                                       this.handleUpdateState({
                                         getData(state) {

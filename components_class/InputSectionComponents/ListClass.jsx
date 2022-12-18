@@ -44,7 +44,7 @@ class ListClass extends PureComponent {
                     >
                       {(provided) => (
                         <div
-                          className="py-1 border border-solid"
+                          className="py-1 w-full flex flex-row justify-between border border-solid"
                           {...provided.draggableProps}
                           {...provided.dragHandleProps}
                           ref={provided.innerRef}
