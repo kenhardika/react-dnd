@@ -42,7 +42,7 @@ export default function FunctionIndex() {
     });
   }
   
-  const handleChange = (e, indexSection) => { // todo create handle list, only change list
+  const handleChange = (e, indexSection) => { 
     dispatch({
       type: "CHANGE_TITLE",
       indexSection,
