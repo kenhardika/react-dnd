@@ -33,4 +33,6 @@ Pada subkomponen image, digunakan input type files yang berfungsi untuk menguplo
 Pada subkomponen List, terdapat fungsi create, edit, dan delete, serta memiliki sifat drag and drop.
 Jadi urutan/order dari subkomponen list dapat diatur/dipindahkan secara intuitif.
 
-Selain itu setiap component telah diatur menggunakan memo/PureFunctions. Memo adalah sebuah fungsi yang disediakan oleh React untuk men-cache komponen dan mencegah re-rendering yang tidak diperlukan. Secara umum, memo adalah sebuah fungsi yang sangat berguna untuk meningkatkan performa aplikasi kita dengan cara yang mudah dan efisien.
+Selain itu setiap component telah diatur menggunakan memo untuk functional component dan shouldComponentUpdate() untuk Class component. Memo adalah sebuah fungsi yang disediakan oleh React untuk men-cache komponen dan mencegah re-rendering yang tidak diperlukan. Secara umum, memo adalah sebuah fungsi yang sangat berguna untuk meningkatkan performa aplikasi kita dengan cara yang mudah dan efisien.
+
+

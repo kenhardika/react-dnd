@@ -117,9 +117,7 @@ export default function FunctionIndex() {
               setImage(defaultImageState);
             }}
             image={image.value}
-            handleUpload={(e) => 
-              handleUpload(e, image.index)
-            }
+            handleUpload={(e) => handleUpload(e, image.index)}
           />
         </ModalLayer>
       )}
@@ -127,7 +125,7 @@ export default function FunctionIndex() {
         className=" w-full bg-scroll flex flex-col 
       justify-center items-center bg-cyan-100"
       >
-        <div className="p-2 flex flex-col items-center gap-4">
+        <div className="p-2 w-full overflow-y-auto flex flex-col items-center gap-4">
           <p>hello, proceed to add section </p>
           <button
             className="w-[100px] border-solid border-2 
