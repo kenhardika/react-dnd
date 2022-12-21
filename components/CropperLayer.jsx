@@ -9,11 +9,11 @@ function CropperLayer({
   handleUpload,
   onHide,
 }) {
-  const [cropperInstance, setCropperInstance] = useState();
+  const [cropper, setCropper] = useState();
   const initCrop = () => {
-    if (!cropperInstance.getCroppedCanvas()) return;
-    if (typeof cropperInstance !== "undefined") {
-      onCrop(cropperInstance.getCroppedCanvas().toDataURL());
+    if (!cropper.getCroppedCanvas()) return;
+    if (typeof cropper !== "undefined") {
+      onCrop(cropper.getCroppedCanvas().toDataURL());
       onHide();
     }
   };
@@ -34,7 +34,7 @@ function CropperLayer({
         initialAspectRatio={aspectRatio}
         checkOrientation={false} // https://github.com/fengyuanchen/cropperjs/issues/671
         onInitialized={(instance) => {
-          setCropperInstance(instance);
+          setCropper(instance);
         }}
         guides={true}
       />
