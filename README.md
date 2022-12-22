@@ -43,7 +43,11 @@ react-beautiful-dnd
 <Draggable /> - sebuah area yang dapat ditarik dan dipindahkan posisinya
 
 react-cropper
+<CropperLayer> / <CropperLayerClass> - komponen untuk menempatkan fungsi dari library react-cropper
+<Cropper> - komponen dari library react-cropper yang berfungsi untuk melakukan cropping sesuai parameter yang tersedia
 
+<FormInputSection> / <FormInputClass> - komponen ini berguna untuk input data berupa form dalam bentuk text
+<ImageSection> / <ImageClass> - komponen ini berguna untuk container dari image yang diupload dan telah dicrop.
 
 Penjelasan Props dan Komponen
 

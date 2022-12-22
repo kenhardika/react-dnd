@@ -7,7 +7,7 @@ class CropperLayerClass extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      cropperInstance: ''
+      cropper: ''
     };
   }
   render() {
@@ -18,12 +18,12 @@ class CropperLayerClass extends PureComponent {
       handleUpload,
       onHide,
     } = this.props;
-    const { cropperInstance } = this.state;
+    const { cropper } = this.state;
 
     const initCrop = () => {
-      if (!cropperInstance.getCroppedCanvas()) return;
-      if (typeof cropperInstance !== "undefined") {
-        onCrop(cropperInstance.getCroppedCanvas().toDataURL());
+      if (!cropper.getCroppedCanvas()) return;
+      if (typeof cropper !== "undefined") {
+        onCrop(cropper.getCroppedCanvas().toDataURL());
         onHide();
       }
     };
@@ -44,7 +44,7 @@ class CropperLayerClass extends PureComponent {
           initialAspectRatio={aspectRatio}
           checkOrientation={false} // https://github.com/fengyuanchen/cropperjs/issues/671
           onInitialized={(instance) => {
-            this.setState({ cropperInstance: instance});
+            this.setState({ cropper: instance});
           }}
           guides={true}
         />
