@@ -46,8 +46,13 @@ react-cropper
 <CropperLayer> / <CropperLayerClass> - komponen untuk menempatkan fungsi dari library react-cropper
 <Cropper> - komponen dari library react-cropper yang berfungsi untuk melakukan cropping sesuai parameter yang tersedia
 
+<ModalLayer> - komponen ini berfungsi sebagai container dari react-cropper, berisi image yang telah dicrop, button input choose file upload image, crop, & cancel
 <FormInputSection> / <FormInputClass> - komponen ini berguna untuk input data berupa form dalam bentuk text
-<ImageSection> / <ImageClass> - komponen ini berguna untuk container dari image yang diupload dan telah dicrop.
+<ImageSection> / <ImageClass> - komponen ini berguna sebagai container dari image yang diupload dan telah dicrop oleh react-cropper.
+<ListSection> / <ListClass> - komponen ini berguna sebagai container yang berisi List FormInput yang dapat diubah & delete tiap formnya. Selain itu component ini dapat dipindahkan posisi urutan form tersebut dengan melakukan drag and drop.
+<InputSection> / <InputSectionClass> - komponen ini adalah container yang berisi kumpulan subkomponen seperti <FormInput>, <ImageSection>, dan <ListSection>
+Komponen ini memiliki fungsi drag and drop yang dapat mengubah order/urutan posisi dari masing masing komponen <InputSection>.
+
 
 Penjelasan Props dan Komponen
 
