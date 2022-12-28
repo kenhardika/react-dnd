@@ -3,11 +3,7 @@ import React, { Component } from 'react';
 
 class ImageClass extends Component {
   shouldComponentUpdate(nextProps) {
-    if (nextProps.image !== this.props.image) {
-      return true;
-    } else {
-      return false;
-    }
+  return nextProps.image !== this.props.image
   }
   render() {
     const { image, handleUpdateState, deleteImage } = this.props;

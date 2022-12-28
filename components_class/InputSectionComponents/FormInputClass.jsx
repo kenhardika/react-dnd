@@ -2,11 +2,7 @@ import React, { Component } from 'react';
 
 class FormInputClass extends Component {
   shouldComponentUpdate(nextProps) {
-    if (nextProps.value !== this.props.value) {
-      return true;
-    } else {
-      return false;
-    }
+    return nextProps.value !== this.props.value
   }
   render() {
     const { handleChange, value, name } = this.props;
