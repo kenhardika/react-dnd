@@ -49,7 +49,7 @@ react-cropper
 komponen
 <ModalLayer> - komponen ini berfungsi sebagai container dari react-cropper, berisi image yang telah dicrop, button input choose file upload image, crop, & cancel. 
   Props: 
-    -onHide yang berfungsi untuk mengatur state show modal.
+    -onHide yang berfungsi untuk mengatur state show modal (muncul atau tidaknya modal).
 
 <FormInputSection> / <FormInputClass> - komponen ini berguna untuk input data berupa form dalam bentuk text
   Props:  
