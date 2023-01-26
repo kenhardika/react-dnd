@@ -1,34 +1,63 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## React Drag and Drop and Duplicate Component
 
-## Getting Started
+Project terdiri dari Parent page yaitu FunctionIndex,
+pada Page FunctionIndex/ClassIndex, disini tempat dimana pusat state management berada.
+Functions yang mengatur state utama dari project diatur pada halaman index.
 
-First, run the development server:
+Untuk Function Component kita menggunakan useReducer, useReducer adalah sebuah fungsi yang disediakan oleh React yang membantu kita untuk mengelola state aplikasi kita dengan lebih mudah. 
+Fungsi ini dapat digunakan bersama dengan komponen React seperti useState. 
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+Biasanya, kita akan menggunakan useReducer ketika state aplikasi kita mulai menjadi lebih kompleks 
+dan memerlukan lebih banyak logika untuk mengelolanya.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Dalam project ini reducer digunakan untuk mengelola CRUD dari komponen section, list, dan image.
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+Selain itu pada project ini juga digunakan library react-beautiful-dnd. React-beautiful-dnd adalah sebuah 
+library untuk membuat fitur drag-and-drop pada aplikasi React. Drag-and-drop adalah sebuah fitur yang memungkinkan 
+pengguna untuk menyeret dan menempatkan elemen pada aplikasi kita dengan menggunakan mouse atau touchpad.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+Library ini memungkinkan kita untuk dengan mudah membuat fitur drag-and-drop pada aplikasi React kita. 
+Selain itu, library ini juga memiliki desain yang indah dan intuitif, sehingga mempermudah pengguna 
+untuk menggunakan fitur tersebut pada aplikasi kita. 
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+Drag and drop pada project ini dapat digunakan pada bagian komponen Section dan subkomponen List.
 
-## Learn More
+Untuk komponen utama, yaitu komponen Section, berisi beberapa subkomponen yaitu title, image, dan list.
+masing masing dari title, image, dan list memiliki fungsi sifat yang dasarnya sama, yaitu dapat diubah(edit), bertambah, dan dihapus. 
+semua dari fungsi fungsi tersebut pada functional component diatur dalam state yang dimanage dengan useReducer.
 
-To learn more about Next.js, take a look at the following resources:
+Pada subkomponen title, dapat diubah dan disimpan suatu form input dalam bentuk text.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Pada subkomponen image, digunakan input type files yang berfungsi untuk mengupload image. Subkomponen ini menggunakan Library react-cropper yaitu library yang digunakan untuk memudahkan membuat cropper pada aplikasi React. Cropper adalah sebuah fitur yang memungkinkan pengguna untuk memotong gambar sesuai dengan keinginan. 
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+Pada subkomponen List, terdapat fungsi create, edit, dan delete, serta memiliki sifat drag and drop.
+Jadi urutan/order dari subkomponen list dapat diatur/dipindahkan secara intuitif.
 
-## Deploy on Vercel
+Selain itu setiap component telah diatur menggunakan memo untuk functional component dan shouldComponentUpdate() untuk Class component. Memo adalah sebuah fungsi yang disediakan oleh React untuk men-cache komponen dan mencegah re-rendering yang tidak diperlukan. Secara umum, memo adalah sebuah fungsi yang sangat berguna untuk meningkatkan performa aplikasi kita dengan cara yang mudah dan efisien.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Penjelasan Library:
+react-beautiful-dnd 
+<DragAndDropContext> - Membungkus/Wrap area komponen dari aplikasi yang akan menggunakan fitur drag and drop
+<Droppable /> - sebuah area yang dapat dijadikan tempat "drop" komponen yang ditarik (drag). Komponen ini berisi <Draggable/>.
+<Draggable /> - sebuah area yang dapat ditarik dan dipindahkan posisinya
+
+react-cropper
+<CropperLayer> / <CropperLayerClass> - komponen untuk menempatkan fungsi dari library react-cropper
+<Cropper> - komponen dari library react-cropper yang berfungsi untuk melakukan cropping sesuai parameter yang tersedia
+
+komponen
+<ModalLayer> - komponen ini berfungsi sebagai container dari react-cropper, berisi image yang telah dicrop, button input choose file upload image, crop, & cancel. 
+  Props: 
+    -onHide yang berfungsi untuk mengatur state show modal (muncul atau tidaknya modal).
+
+<FormInputSection> / <FormInputClass> - komponen ini berguna untuk input data berupa form dalam bentuk text
+  Props:  
+    -
+
+<ImageSection> / <ImageClass> - komponen ini berguna sebagai container dari image yang diupload dan telah dicrop oleh react-cropper.
+<ListSection> / <ListClass> - komponen ini berguna sebagai container yang berisi List FormInput yang dapat diubah & delete tiap formnya. Selain itu component ini dapat dipindahkan posisi urutan form tersebut dengan melakukan drag and drop.
+<InputSection> / <InputSectionClass> - komponen ini adalah container yang berisi kumpulan subkomponen seperti <FormInput>, <ImageSection>, dan <ListSection>
+Komponen ini memiliki fungsi drag and drop yang dapat mengubah order/urutan posisi dari masing masing komponen <InputSection>.
+
+
